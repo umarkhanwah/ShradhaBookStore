@@ -1,0 +1,36 @@
+﻿@model ShradhaBookStore.Models.Product
+@{
+    Layout = "_LayoutAdmin";
+}
+<h1>Inward Product</h1>
+<hr />
+<div class="row">
+    <div class="col-md-5 h-100 mx-auto">
+        @if(ViewData["msg"] != null)
+        {
+            <div class="alert alert-warning" >@ViewData["msg"]</div>
+        }
+        <form asp-action="Inward_Products">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
+            <div class="form-group">
+                <label asp-for="Id" class="control-label">Product</label>
+                <select asp-for="Id" class="form-control" asp-items="ViewBag.Product"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+ 
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+          <br />
+            <div class="form-group">
+                <input type="submit" value="Inward" class="btn btn-primary" />
+            </div>
+        </form>
+<br />
+    <a asp-action="Show_Products">Show Products</a>
+    </div>
+</div>
+

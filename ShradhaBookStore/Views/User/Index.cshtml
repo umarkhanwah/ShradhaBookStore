@@ -1,0 +1,148 @@
+﻿@model ShradhaBookStore.Models.Allproduct
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutGuest";
+}
+
+<!-- Start Banner Hero -->
+
+                <div  id="template-mo-zay-hero-carousel" class="container-fluid">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 ">
+                            <img class="img-fluid banner_boy" src="~/Images/banner_boy.png" alt="">
+                        </div>
+                        <link rel="stylesheet" href="~/css/custom.css">
+                        <div class="col-lg-6 mb-0 d-flex align-items-center" id="book-banner">
+                            <img class="img-fluid banner_book" src="~/Images/banner_book.png" alt="">
+                            <div class="text-align-left align-self-center" style="z-index: 1;">
+                                <h1 class="h1 text-success banner-text"><b>Shradha</b> BookStore</h1>
+                                <h3 class="h2 banner-text">Where Every Page Sparks Imagination.</h3>
+                                <p>
+                                    At ShradhaBookstore, we believe in the power of words to ignite curiosity and
+                                    inspire change. With a diverse collection curated for every reader, we invite you to
+                                    embark on a journey through literature's endless realms.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          
+    <!-- End Banner Hero -->
+<!-- Start Categories of The Month -->
+<section class="container my-5">
+    <div class="row text-center pt-3">
+        <div class="col-lg-6 m-auto">
+            <h1 class="h1">Categories</h1>
+            <p>
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.
+            </p>
+        </div>
+    </div>
+    <div class="row " style="height:90vh;">
+        @* Show Parent Category Cards on Home Page *@
+        @foreach (var cat in Model.Categories)
+        {
+            <div class="col-12 col-md-4 p-5 mt-3" style="height:100%;">
+                <a asp-action="Sub_Categories" asp-route-id="@cat.Id"><img src="~/images/Categories/@cat.Image" class="rounded-circle img-fluid border " height="100%" width="100%"></a>
+                <h5 class="text-center mt-3 mb-3">@cat.Name</h5>
+                <p class="text-center">
+                    @cat.Description <br />
+                    <a class="btn btn-success">Go Shop</a>
+                </p>
+            </div>
+        }
+    </div>
+</section>
+<!-- End Categories of The Month -->
+<!-- Start Featured Product -->
+<section class="bg-light">
+    <div class="container py-5">
+        <div class="row text-center py-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Featured Product</h1>
+                <p>
+                    Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100">
+                    <a href="shop-single.html">
+                        <img src="~/images/feature_prod_01.jpg" class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <ul class="list-unstyled d-flex justify-content-between">
+                            <li>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-muted fa fa-star"></i>
+                                <i class="text-muted fa fa-star"></i>
+                            </li>
+                            <li class="text-muted text-right">$240.00</li>
+                        </ul>
+                        <a href="shop-single.html" class="h2 text-decoration-none text-dark">Gym Weight</a>
+                        <p class="card-text">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt in culpa qui officia deserunt.
+                        </p>
+                        <p class="text-muted">Reviews (24)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100">
+                    <a href="shop-single.html">
+                        <img src="/feature_prod_02.jpg" class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <ul class="list-unstyled d-flex justify-content-between">
+                            <li>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-muted fa fa-star"></i>
+                                <i class="text-muted fa fa-star"></i>
+                            </li>
+                            <li class="text-muted text-right">$480.00</li>
+                        </ul>
+                        <a href="shop-single.html" class="h2 text-decoration-none text-dark">Cloud Nike Shoes</a>
+                        <p class="card-text">
+                            Aenean gravida dignissim finibus. Nullam ipsum diam, posuere vitae pharetra sed, commodo ullamcorper.
+                        </p>
+                        <p class="text-muted">Reviews (48)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card h-100">
+                    <a href="shop-single.html">
+                        <img src="/feature_prod_03.jpg" class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <ul class="list-unstyled d-flex justify-content-between">
+                            <li>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i>
+                            </li>
+                            <li class="text-muted text-right">$360.00</li>
+                        </ul>
+                        <a href="shop-single.html" class="h2 text-decoration-none text-dark">Summer Addides Shoes</a>
+                        <p class="card-text">
+                            Curabitur ac mi sit amet diam luctus porta. Phasellus pulvinar sagittis diam, et scelerisque ipsum lobortis nec.
+                        </p>
+                        <p class="text-muted">Reviews (74)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Featured Product -->

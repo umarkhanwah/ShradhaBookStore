@@ -1,0 +1,47 @@
+﻿@model CategoryProductViewModel
+@{
+    Layout = "_LayoutGuest";
+}
+<!-- Start Categories of The Month -->
+<section class="container py-5">
+    <div class="row text-center pt-3">
+        <div class="col-lg-6 m-auto">
+            <h1 class="h1">@ViewData["Heading"]</h1>
+            <p>
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                deserunt mollit anim id est laborum.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        @* Show Parent Category Cards on Home Page *@   
+                @foreach (var cat in Model.Categories)
+                {
+                    <div class="col-12 col-md-4 p-5 mt-3">
+                <a asp-action="Sub_Categories" asp-route-id="@cat.Id"><img src="~/images/Products/@cat.Image" class="rounded-circle img-fluid border  w-100 h-50"></a>
+                        <h5 class="text-center mt-3 mb-3">@cat.Name</h5>
+                        <p class="text-center">
+                            @cat.Description <br />
+                            <a class="btn btn-success">Go Shop</a>
+                        </p>
+                    </div>
+
+                }
+                @foreach (var products in Model.Products)
+                {
+                    <div class="col-12 col-md-4 p-5 mt-3">
+                        <a asp-action="Product_info" asp-route-id="@products.Id"><img src="~/images/Products/@products.Image" class="rounded-circle img-fluid border w-100 h-50"></a>
+                        <h5 class="text-center mt-3 mb-3">@products.Name</h5>
+                        <p class="text-center">
+                            @products.Description <br />
+                            <a class="btn btn-success">Go Shop</a>
+                        </p>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- end catagory section -->

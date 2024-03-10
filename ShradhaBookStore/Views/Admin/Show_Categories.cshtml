@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ShradhaBookStore.Models.Category>
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Show_Categories";
+}
+
+<h1>Show_Categories</h1>
+
+<p>
+    <a asp-action="add_category">Create New</a>
+</p>
+@if(@ViewData["msg"]!= null){
+
+<div class="alert alert-warning">
+    @ViewData["msg"]
+</div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                Parent Category
+            </th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.ParentCategory.Name)
+            </td> 
+            <td>
+
+                    @Html.DisplayFor(modelItem => item.Status)
+
+            </td>   
+            <td>
+                    <a asp-action="Update_Category" asp-route-id="@item.Id">Edit</a> |
+                @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
+                    <a asp-action="Delete_Category" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

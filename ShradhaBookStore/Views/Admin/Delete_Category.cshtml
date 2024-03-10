@@ -1,0 +1,16 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutAdmin";
+}
+@if (ViewData["Confirmation"] != null)
+{
+    <div class="alert alert-danger"> @ViewData["Confirmation"]
+    <br />
+        <a asp-action="Delete_SubCategories" asp-route-reaction="Yes" asp-route-categoryid="@Convert.ToInt32(ViewData["Category_id"])" class="btn btn-danger">Yes</a>
+        <a asp-action="Delete_SubCategories" asp-route-reaction="No" asp-route-categoryid="@Convert.ToInt32(ViewData["Category_id"])" class="btn btn-info">No</a>
+    </div>
+    @ViewData["SubCategories"]<br />
+    @ViewData["Category"]
+}

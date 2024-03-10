@@ -1,0 +1,17 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Admin";
+}
+
+
+<h1>Hurrreeeeeyyyy @ViewData["Name"] ... ! <br /> You're an Admin</h1>
+<a asp-action="add_category" class="btn btn-outline-dark"> Add a Category</a>
+<a asp-action="Show_Categories" class="btn btn-outline-primary">Show Categories</a>
+<a asp-action="Add_Manufacturer" class="btn btn-outline-info">Register New Manufacturer</a>
+<a asp-action="Show_Manufacturers" class="btn btn-outline-secondary">Show Manufacturers</a>
+<a asp-action="Add_Product" class="btn btn-primary">Add New Product</a>
+<a asp-action="Show_Products" class="btn btn-secondary">Show Products</a>
+<a asp-controller="User" asp-action="Logout" class="btn btn-danger">Logout</a>
