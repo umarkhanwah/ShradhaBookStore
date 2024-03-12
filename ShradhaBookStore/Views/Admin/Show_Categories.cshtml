@@ -27,6 +27,7 @@
                 Parent Category
             </th>
             <th>Status</th>
+            <th>Image</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -43,11 +44,12 @@
 
                     @Html.DisplayFor(modelItem => item.Status)
 
-            </td>   
+            </td> 
+            <td class="w-25"> <img src="~/Images/Categories/@item.Image" class="img-fluid w-50   " /> </td>
             <td>
                     <a asp-action="Update_Category" asp-route-id="@item.Id">Edit</a> |
                 @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
-                    <a asp-action="Delete_Category" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Deactivate_Category" asp-route-id="@item.Id">Disable</a>
             </td>
         </tr>
     }

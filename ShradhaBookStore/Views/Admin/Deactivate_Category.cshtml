@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+        <h2>Confirm Disable</h2>
+        <p>@ViewData["msg"]</p>
+        <form method="post" action="ConfirmDisable">
+            <input type="hidden" name="CategoryId" value="@ViewData["CategoryId"]" />
+            <input type="submit" class="btn btn-danger" value="Yes" />
+        </form>
+        <form method="get" asp-action="Show_Categories">
+            <!-- Or any other action you want to redirect to -->
+            <input type="submit" class="btn btn-primary" value="No" />
+        </form>
+   

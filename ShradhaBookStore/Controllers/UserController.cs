@@ -16,6 +16,7 @@ namespace ShradhaBookStore.Controllers
         public UserController(ShradhaBookStoreContext bookStoreContext , IWebHostEnvironment webHostEnvironment)
         {
             this.bookStoreContext = bookStoreContext;
+            this.webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
