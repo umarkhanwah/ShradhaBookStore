@@ -14,12 +14,12 @@ public partial class Category
 
     public string Description { get; set; } = null!;
 
-    public string? Status { get; set; }
+    public int? Status { get; set; }
 
     public string? Image { get; set; }
+
     [NotMapped]
     public IFormFile ImageFile { get; set; }
-
 
     public virtual ICollection<Category> InverseParentCategory { get; set; } = new List<Category>();
 

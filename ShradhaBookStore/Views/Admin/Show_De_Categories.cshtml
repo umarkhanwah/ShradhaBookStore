@@ -10,11 +10,12 @@
 <p>
     <a asp-action="add_category">Create New</a>
 </p>
-@if(@ViewData["msg"]!= null){
+@if (@ViewData["msg"] != null)
+{
 
-<div class="alert alert-warning">
-    @ViewData["msg"]
-</div>
+    <div class="alert alert-warning">
+        @ViewData["msg"]
+    </div>
 }
 
 <table class="table">
@@ -26,28 +27,29 @@
             <th>
                 Parent Category
             </th>
-      
+   
             <th>Image</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.ParentCategory.Name)
-            </td> 
-        
-            <td class="w-25"> <img src="~/Images/Categories/@item.Image" class="img-fluid w-50   " /> </td>
-            <td>
+                </td>
+               
+                <td class="w-25"> <img src="~/Images/Categories/@item.Image" class="img-fluid w-50   " /> </td>
+                <td>
                     <a asp-action="Update_Category" asp-route-id="@item.Id">Edit</a> |
-                @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
-                    <a asp-action="Deactivate_Category" asp-route-id="@item.Id">Disable</a>
-            </td>
-        </tr>
-    }
+                    @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
+                    <a asp-action="Activate_Category" asp-route-id="@item.Id">Activate</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

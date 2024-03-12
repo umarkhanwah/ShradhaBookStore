@@ -59,9 +59,7 @@ public partial class ShradhaBookStoreContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.ParentCategoryId).HasColumnName("ParentCategoryID");
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .HasDefaultValue("active");
+            entity.Property(e => e.Status).HasDefaultValue(0);
 
             entity.HasOne(d => d.ParentCategory).WithMany(p => p.InverseParentCategory)
                 .HasForeignKey(d => d.ParentCategoryId)
@@ -123,10 +121,7 @@ public partial class ShradhaBookStoreContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("name");
             entity.Property(e => e.Price).HasColumnName("price");
-            entity.Property(e => e.Status)
-                .HasMaxLength(20)
-                .HasDefaultValue("Available")
-                .IsFixedLength();
+            entity.Property(e => e.Status).HasDefaultValue(0);
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)

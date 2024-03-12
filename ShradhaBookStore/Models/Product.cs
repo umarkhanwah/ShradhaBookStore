@@ -27,7 +27,7 @@ public partial class Product
 
     public int Quantity { get; set; }
 
-    public string? Status { get; set; }
+    public int? Status { get; set; }
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 

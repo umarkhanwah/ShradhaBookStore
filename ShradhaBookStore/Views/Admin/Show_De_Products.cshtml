@@ -1,0 +1,56 @@
+﻿@model ShradhaBookStore.Models.Allproduct
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Disabled Products";
+}
+
+@if (@ViewData["msg"] != null)
+{
+
+    <div class="alert alert-warning">
+        @ViewData["msg"]
+    </div>
+}
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>Id</th>
+            <th>Name</th>
+            <th>Acronyms</th>
+            <th>Categories</th>
+            <th>Price</th>
+            <th>Quantity</th>
+
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    @{
+        int counter = 1;
+    }
+    @foreach (var e in Model.Products)
+    {
+        <tr>
+            <td>@counter</td>
+            <td>@e.Name</td>
+            @* <td>@($"{e.Manufacturer.Acronyms}00{counter}")</td> *@
+            <td>@e.Acronym</td>
+            <td>@e.Category.Name</td>
+            <td>@e.Price</td>
+            <td>@e.Quantity</td>
+
+            <td class="w-25">
+                <img class="img-fluid w-50" src="~/Images/Products/@e.Image" />
+
+            </td>
+            <td> <a asp-route-id="@e.Id" asp-action="Activate_Product">Activate</a> | <a asp-route-id="@e.Id" asp-action="Update_Product">Edit</a></td>
+
+        </tr>
+
+        counter++;
+    }
+</table>

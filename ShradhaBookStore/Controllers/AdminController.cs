@@ -73,7 +73,7 @@ namespace ShradhaBookStore.Controllers
                 TempData["Error"] = "Please Login first";
                 return RedirectToAction("Login", "User");
             }
-            var categories = bookStoreContext.Categories.ToList();
+            var categories = bookStoreContext.Categories.Where(x => x.Status != 1).ToList(); // 1 Means "Disabled"
             ViewData["msg"] = TempData["msg"];
             return View(categories);
         }
@@ -129,7 +129,7 @@ namespace ShradhaBookStore.Controllers
             }
 
             // If there are no subcategories or products, directly disable the category
-            category.Status = "Disabled"; // Assuming there's a Status property in your Category model
+            category.Status = 1 ; // Assuming there's a Status property in your Category model
             bookStoreContext.Categories.Update(category);
             bookStoreContext.SaveChanges();
             TempData["msg"] = "Category Disabled Successfully";
@@ -144,19 +144,19 @@ namespace ShradhaBookStore.Controllers
             var products = bookStoreContext.Products.Where(x => x.CategoryId == CategoryId).ToList();
 
             // Disable the current category
-            category.Status = "Disabled";
+            category.Status = 1;
             bookStoreContext.Categories.Update(category);// Assuming there's a Status property in your Category model
             bookStoreContext.SaveChanges();
 
             // If there are subcategories or products, disable them as well
             foreach (var subCategory in subs)
             {
-                subCategory.Status = "Disabled";
+                subCategory.Status = 1;
                 bookStoreContext.Categories.Update(subCategory);// Assuming there's a Status property in your Category model
             }
             foreach (var product in products)
             {
-                product.Status = "Disabled"; // Assuming there's a Status property in your Product model
+                product.Status = 1; // Assuming there's a Status property in your Product model
                 bookStoreContext.Products.Update(product);// Assuming there's a Status property in your Category model
             }
             bookStoreContext.SaveChanges();
@@ -166,23 +166,20 @@ namespace ShradhaBookStore.Controllers
         }
 
 
-        //public IActionResult Disable_Category(int id)
-        //{
-        //    var category = bookStoreContext.Categories.Find(id);
-        //    var subs = bookStoreContext.Categories.Where(x=> x.ParentCategoryId == id).ToList();
-        //    var products = bookStoreContext.Products.Where(x=> x.CategoryId== id).ToList();
-        //    if(subs.Count > 0)
-        //    {
-        //        ViewData["msg"] = "This Category Has Sub Categories , Do You Wan't to Disable Them All ?";
-        //        return RedirectToAction();
-        //    }
-        //    else if (products.Count > 0)
-        //    {
-        //        ViewData["msg"] = "This Category Has Products , Do You Wan't to Disable Them All ?";
-        //        return RedirectToAction();
-        //    }
-        //    return View();
-        //}
+        public IActionResult Activate_Category(int id)
+        {
+            var categories = bookStoreContext.Categories.First(x => x.Id == id);
+            if (categories == null)
+            {
+                TempData["msg"] = "Category Not Found";
+                return RedirectToAction("Show_De_Categories");
+            }
+            categories.Status = 0;
+            bookStoreContext.Categories.Update(categories);
+            bookStoreContext.SaveChanges();
+            TempData["msg"] = "Category Activated";
+            return RedirectToAction("Show_De_Categories");
+        }
 
 
         public IActionResult Add_Product()
@@ -236,7 +233,7 @@ namespace ShradhaBookStore.Controllers
             string uniquefilename = string.Empty;
             if (category.ImageFile != null)
             {
-                string folder = Path.Combine(webHostEnvironment.WebRootPath, "Images", "Categories");
+                string folder = Path.Combine(webHostEnvironment.WebRootPath, "Images", "Products");
                 uniquefilename = Guid.NewGuid().ToString() + "_" + category.ImageFile.FileName;
                 string filepath = Path.Combine(folder, uniquefilename);
                 using (var fileStream = new FileStream(filepath, FileMode.Create))
@@ -255,7 +252,7 @@ namespace ShradhaBookStore.Controllers
             }
             ViewData["msg"] = TempData["msg"];
             Allproduct allproduct = new Allproduct();   
-            var products = bookStoreContext.Products.ToList();
+            var products = bookStoreContext.Products.Where(x=>x.Status != 1).ToList();
             var categories = bookStoreContext.Categories.ToList();
             var manufacturers = bookStoreContext.Manufacturers.ToList();
             allproduct.Products = products;
@@ -316,11 +313,81 @@ namespace ShradhaBookStore.Controllers
                 TempData["msg"] = "Product Not Found";
                 return RedirectToAction("Show_Products");
             }
-            products.Status = "Disabled";
+            products.Status = 1;
             bookStoreContext.Products.Update(products);
             bookStoreContext.SaveChanges();
             TempData["msg"] = "Product Deactivated";
             return RedirectToAction("Show_Products");
+        }
+        public IActionResult Activate_Product(int id)
+        {
+            var products = bookStoreContext.Products.First(x => x.Id == id);
+            if (products == null)
+            {
+                TempData["msg"] = "Product Not Found";
+                return RedirectToAction("Show_Products");
+            }
+            products.Status = 0;
+            bookStoreContext.Products.Update(products);
+            bookStoreContext.SaveChanges();
+            TempData["msg"] = "Product Activated";
+            return RedirectToAction("Show_De_Products");
+        }
+        public IActionResult Add_Feature(int id)
+        {
+            var products = bookStoreContext.Products.First(x => x.Id == id);
+            if (products == null)
+            {
+                TempData["msg"] = "Product Not Found";
+                return RedirectToAction("Show_Products");
+            }
+            products.Status = 2;
+            bookStoreContext.Products.Update(products);
+            bookStoreContext.SaveChanges();
+            TempData["msg"] = "Product Added To Featured";
+            return RedirectToAction("Show_Products");
+        }
+        public IActionResult Remove_feature(int id)
+        {
+            var products = bookStoreContext.Products.First(x => x.Id == id);
+            if (products == null)
+            {
+                TempData["msg"] = "Product Not Found";
+                return RedirectToAction("Show_Products");
+            }
+            products.Status = 0;
+            bookStoreContext.Products.Update(products);
+            bookStoreContext.SaveChanges();
+            TempData["msg"] = "Product Removed from Featured";
+            return RedirectToAction("Show_Products");
+        }
+        public IActionResult Show_De_Products()
+        {
+            if (HttpContext.Session.GetString("adminsession") == null)
+            {
+                TempData["Error"] = "Please Login first";
+                return RedirectToAction("Login", "User");
+            }
+            ViewData["msg"] = TempData["msg"];
+            Allproduct allproduct = new Allproduct();
+            var products = bookStoreContext.Products.Where(x => x.Status == 1).ToList();
+            var categories = bookStoreContext.Categories.ToList();
+            var manufacturers = bookStoreContext.Manufacturers.ToList();
+            allproduct.Products = products;
+            allproduct.Categories = categories;
+            allproduct.Manufacturers = manufacturers;
+            return View(allproduct);
+        }
+        public IActionResult Show_De_Categories()
+        {
+            if (HttpContext.Session.GetString("adminsession") == null)
+            {
+                TempData["Error"] = "Please Login first";
+                return RedirectToAction("Login", "User");
+            }
+            var categories = bookStoreContext.Categories.Where(x => x.Status == 1).ToList();
+            ViewData["msg"] = TempData["msg"];
+            return View(categories);
         }
 
     }
