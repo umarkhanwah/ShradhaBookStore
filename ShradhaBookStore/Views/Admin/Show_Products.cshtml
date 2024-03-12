@@ -26,8 +26,10 @@
             <th>Categories</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Action</th>
+            <th>Status</th>
             <th>Image</th>
+            <th>Action</th>
+            <th>Featured</th>
         </tr>
     </thead>
     @{
@@ -42,11 +44,12 @@
         <td>@e.Category.Name</td>
             <td>@e.Price</td>
             <td>@e.Quantity</td>
+            <td>@e.Status</td>
             <td class="w-25">
                 <img class="img-fluid w-50" src="~/Images/Products/@e.Image" />
                
             </td>
-            <td> <a asp-route-id="@e.Id" asp-action="Delete_Product">Delete</a> | <a asp-route-id="@e.Id" asp-action="Update_Product">Edit</a></td>
+            <td> <a asp-route-id="@e.Id" asp-action="Deactivate_Product">Deactivate</a> | <a asp-route-id="@e.Id" asp-action="Update_Product">Edit</a></td>
             <td>
                 @if (@e.Status == "Featured")
                 {
