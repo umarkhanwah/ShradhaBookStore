@@ -17,9 +17,9 @@ public partial class Category
     public int? Status { get; set; }
 
     public string? Image { get; set; }
-
     [NotMapped]
     public IFormFile ImageFile { get; set; }
+
 
     public virtual ICollection<Category> InverseParentCategory { get; set; } = new List<Category>();
 

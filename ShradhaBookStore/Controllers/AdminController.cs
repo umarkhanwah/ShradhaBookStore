@@ -23,6 +23,18 @@ namespace ShradhaBookStore.Controllers
             ViewData["Name"] = HttpContext.Session.GetString("adminsession");
             return View();
         }
+        public IActionResult Show_Users()
+        {
+            if (HttpContext.Session.GetString("adminsession") == null)
+            {
+                TempData["Error"] = "Please Login first";
+                return RedirectToAction("Login", "User");
+            }
+            var users = bookStoreContext.Users.ToList(); 
+            ViewData["msg"] = TempData["msg"];
+            return View(users);
+        }
+
         public IActionResult Add_Category()
         {
             var categoriesWithoutParent = bookStoreContext.Categories

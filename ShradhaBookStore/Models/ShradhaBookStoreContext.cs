@@ -25,6 +25,8 @@ public partial class ShradhaBookStoreContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<Review> Reviews { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<Wishlist> Wishlists { get; set; }
@@ -132,6 +134,21 @@ public partial class ShradhaBookStoreContext : DbContext
                 .HasConstraintName("FK_Products_Manufacturer");
         });
 
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Reviews__3214EC07C1FB0434");
+
+            entity.Property(e => e.Comment).IsUnicode(false);
+
+            entity.HasOne(d => d.Product).WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_ReviewProductId");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_ReviewUserId");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__users__3213E83F81305F69");
@@ -152,6 +169,7 @@ public partial class ShradhaBookStoreContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("password");
+            entity.Property(e => e.Status).HasDefaultValue(0);
             entity.Property(e => e.Username)
                 .HasMaxLength(30)
                 .IsUnicode(false)
