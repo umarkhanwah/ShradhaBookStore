@@ -1,0 +1,97 @@
+﻿@model ShradhaBookStore.Models.Manufacturer
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Manufacturers";
+}
+
+<h1>ManuFacturers</h1>
+
+<h4>Add New</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add_Manufacturer">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input id="nameInput" asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+                <input id="acronymInput" asp-for="Acronyms" class="form-control d-none" />
+            </div>
+            <br />
+            <script>
+                // Get reference to the Name input field
+                const nameInput = document.getElementById('nameInput');
+
+                // Get reference to the Acronym input field
+                const acronymInput = document.getElementById('acronymInput');
+
+                // Add an event listener to the Name input field to listen for changes
+                nameInput.addEventListener('input', function () {
+                    // Get the value of the Name input field
+                    const nameValue = this.value;
+
+                    // Extract the abbreviation from the Name value (e.g., first letter of each word)
+                    const abbreviation = nameValue.replace(/[^A-Z]/g, '');
+
+                    // Set the abbreviation as the value of the Acronym input field
+                    acronymInput.value = abbreviation;
+                });
+            </script>
+
+         
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+
+    <h4>Show_Manufacturers</h4>
+    @if (@ViewData["msg"] != null)
+    {
+
+        <div class="alert alert-warning">
+            @ViewData["msg"]
+        </div>
+    }
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Abbreviation
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.manufacturers)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Acronyms
+                    </td>
+                    <td>
+                        <a asp-action="Update_Manufacturer" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Deactivate_Manufacturer" asp-route-id="@item.Id">De-Activate</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -14,7 +14,6 @@ public partial class Product
     [NotMapped]
     public IFormFile ImageFile { get; set; }
 
-
     public int? CategoryId { get; set; }
 
     public int? ManufacturerId { get; set; }

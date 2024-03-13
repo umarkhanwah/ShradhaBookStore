@@ -207,7 +207,7 @@ namespace ShradhaBookStore.Controllers
                                                 })
                                                 .ToList();
 
-            var manufacturers = bookStoreContext.Manufacturers
+            var manufacturers = bookStoreContext.Manufacturers.Where(x=>x.Status == 0)
                                               
                                                .Select(c => new SelectListItem
                                                {
@@ -443,6 +443,83 @@ namespace ShradhaBookStore.Controllers
 
             TempData["msg"] = "Succesffully Deleted";
             return RedirectToAction("Add_Faq");
+        }
+        public IActionResult Manufacturers()
+        {
+            ViewBag.manufacturers = bookStoreContext.Manufacturers.Where(x=>x.Status == 0).ToList();
+            ViewData["msg"] = TempData["msg"];
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Manufacturers(Manufacturer manufacturer)
+        {
+            if (ModelState.IsValid)
+            {
+                bookStoreContext.Manufacturers.Add(manufacturer);
+                bookStoreContext.SaveChanges();
+                TempData["msg"] = "Manufacturer Added Sucessfully";
+                return RedirectToAction("Manufacturers");
+            }
+            
+            return RedirectToAction("Manufacturers");
+
+        }
+        public IActionResult Show_De_Manufacturers()
+        {
+            var manufacturers = bookStoreContext.Manufacturers.Where(x=>x.Status == 1).ToList();
+            ViewData["msg"] = TempData["msg"];
+            return View(manufacturers);
+        }
+        public IActionResult Deactivate_Manufacturer(int id)
+        {
+            var manufacturer = bookStoreContext.Manufacturers.Find(id);
+            if (manufacturer == null)
+            {
+                TempData["msg"] = "Manufacturer Not Found";
+                return RedirectToAction("Manufacturers");
+            }
+            manufacturer.Status = 1;
+            bookStoreContext.Manufacturers.Update(manufacturer);
+            bookStoreContext.SaveChanges();
+            TempData["msg"] = "Manufacturer Deactivated";
+            return RedirectToAction("Manufacturers");
+        }
+        public IActionResult Activate_Manufacturer(int id)
+        {
+            var manufacturer = bookStoreContext.Manufacturers.Find(id);
+            if (manufacturer == null)
+            {
+                TempData["msg"] = "Manufacturer Not Found";
+                return RedirectToAction("Manufacturers");
+            }
+            manufacturer.Status = 0;
+            bookStoreContext.Manufacturers.Update(manufacturer);
+            bookStoreContext.SaveChanges();
+            TempData["msg"] = "Manufacturer Activated";
+            return RedirectToAction("Show_De_Manufacturers");
+        }
+        public IActionResult Update_Manufacturer(int id)
+        {
+            var manufacturer = bookStoreContext.Manufacturers.Find(id);
+            if(manufacturer == null)
+            {
+                TempData["msg"] = "No Manufacturer Found";
+                return RedirectToAction("Manufacturers");
+            }
+            return View(manufacturer);
+        }
+        [HttpPost]
+         public IActionResult Update_Manufacturer(Manufacturer manufacturer)
+        {
+            if (ModelState.IsValid)
+            {
+                bookStoreContext.Manufacturers.Add(manufacturer);
+                bookStoreContext.SaveChanges();
+                TempData["msg"] = "Manufacturer Added Sucessfully";
+                return RedirectToAction("Manufacturers");
+            }
+
+            return RedirectToAction("Update_Manufacturer");
         }
 
     }

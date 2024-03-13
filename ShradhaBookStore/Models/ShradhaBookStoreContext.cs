@@ -91,6 +91,7 @@ public partial class ShradhaBookStoreContext : DbContext
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("name");
+            entity.Property(e => e.Status).HasDefaultValue(0);
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -187,7 +188,7 @@ public partial class ShradhaBookStoreContext : DbContext
             entity.Property(e => e.Usertype)
                 .HasMaxLength(10)
                 .IsUnicode(false)
-                .HasDefaultValueSql("(user_name())")
+                .HasDefaultValue("user")
                 .HasColumnName("usertype");
         });
 
