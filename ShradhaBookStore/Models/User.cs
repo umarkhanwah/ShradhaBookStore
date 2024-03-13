@@ -20,7 +20,6 @@ public partial class User
     [NotMapped]
     public IFormFile ImageFile { get; set; }
 
-
     public string? Address { get; set; }
 
     public int? Status { get; set; }

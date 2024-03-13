@@ -19,6 +19,8 @@ public partial class ShradhaBookStoreContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<Faq> Faqs { get; set; }
+
     public virtual DbSet<Manufacturer> Manufacturers { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
@@ -66,6 +68,14 @@ public partial class ShradhaBookStoreContext : DbContext
             entity.HasOne(d => d.ParentCategory).WithMany(p => p.InverseParentCategory)
                 .HasForeignKey(d => d.ParentCategoryId)
                 .HasConstraintName("FK_Categories_Subcategory");
+        });
+
+        modelBuilder.Entity<Faq>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Faqs__3214EC07EFB1D83A");
+
+            entity.Property(e => e.Answer).IsUnicode(false);
+            entity.Property(e => e.Question).IsUnicode(false);
         });
 
         modelBuilder.Entity<Manufacturer>(entity =>

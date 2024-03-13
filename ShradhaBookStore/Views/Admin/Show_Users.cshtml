@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Usertype)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Password)
+                @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Image)
@@ -40,7 +40,16 @@
                 @Html.DisplayFor(modelItem => item.Usertype)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Password)
+                    @if (item.Status == 0)
+                    {
+                        <b>Active</b>
+                    }
+                    else
+                    {
+                        <b class="text-danger">Disabled</b>
+                        
+                    }
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Image)

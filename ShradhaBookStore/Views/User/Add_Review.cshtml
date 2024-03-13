@@ -1,0 +1,92 @@
+﻿@model ShradhaBookStore.Models.Review
+
+@{
+    Layout = "_LayoutGuest";
+}
+<div class="container con">
+<h4>Review</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <style>
+            .con{
+                height:80vh;
+            }
+          
+.rate {
+    float: left;
+    
+    height: 46px;
+    padding: 0 10px;
+}
+form{
+    display:flex;
+    flex-direction:column;
+    width:100vw;
+    justify-content:center;
+    align-content:center;
+    align-items:center;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:40px;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:80px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+    font-size:40px;
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+</style>
+
+<form method="post" asp-action="Add_Review">
+
+              <div class="rate">
+        <input type="radio" id="star5" asp-for="Stars" value="5" />
+        <label for="star5" title="text"></label>
+        <input type="radio" id="star4" asp-for="Stars" value="4" />
+        <label for="star4" title="text"></label>
+        <input type="radio" id="star3" asp-for="Stars" value="3" />
+        <label for="star3" title="text"></label>
+        <input type="radio" id="star2" asp-for="Stars" value="2" />
+        <label for="star2" title="text"></label>
+        <input type="radio" id="star1" asp-for="Stars" value="1" />
+        <label for="star1" title="text"></label>
+    </div>
+        
+      <h4>Your Feedback </h4>  
+    <textarea asp-for="Comment" id="" cols="30" rows="10"></textarea>
+
+    <input asp-for="ProductId" value="@ViewData["Product_id"]" class="d-none">
+    <input type="submit" value="submit" class="btn btn-success">
+  </form>
+        </div>
+
+ 
+    </div>
+
+
+
+</div>

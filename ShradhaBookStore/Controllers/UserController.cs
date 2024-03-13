@@ -38,6 +38,11 @@ namespace ShradhaBookStore.Controllers
             alldata.Categories = categories;
             return View(alldata);
         }
+        public IActionResult Faqs()
+        {
+            var faq = bookStoreContext.Faqs.ToList();
+            return View(faq);
+        }
         public IActionResult Sub_Categories(int id ,  string heading)
         {
             
@@ -266,25 +271,6 @@ namespace ShradhaBookStore.Controllers
             return View();
         }
 
-        //public IActionResult Sub_Categories(int id)
-        //{
-        //    var categories = bookStoreContext.Categories.Where(x=>x.ParentCategoryId== id).ToList();
-        //    var Category = bookStoreContext.Categories.Where(x => x.Id== id).First();
-
-        //    if (categories.Count == 0)
-        //    {
-        //        var products = bookStoreContext.Products.Where(x => x.CategoryId == id).ToList();
-
-
-        //        ViewData["Heading"] = Category.ParentCategory+"/"+Category.Name;
-        //        return View(products);
-        //    }
-        //    else
-        //    {
-        //        ViewData["Heading"] = Category.Name;
-        //        return View(categories);
-        //    }
-        //}
         public IActionResult Dashboard()
         {
             ViewData["Name"] = HttpContext.Session.GetString("usersession");
@@ -328,8 +314,42 @@ namespace ShradhaBookStore.Controllers
             return uniquefilename;
         }
 
+        public IActionResult Add_Review(int product_id)
+        {
+                ViewData["Name"] = HttpContext.Session.GetString("usersession");
+                if (ViewData["Name"] == null)
+                {
+                    TempData["Error"] = "Please Login First";
+                    return RedirectToAction("Login", "User");
+                }
+            ViewData["Product_id"] = product_id;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Add_Review(Review review)
+        {
+            if (ModelState.IsValid)
+            {
+                review.UserId = HttpContext.Session.GetInt32("usersession");
+                bookStoreContext.Reviews.Add(review);
+                bookStoreContext.SaveChanges();
+                TempData["msg"] = "Successfully Added";
+                return RedirectToAction("Show_Products");
+            }
+            TempData["msg"] = "Model State not valid";
+            return RedirectToAction("Show_Products");
+        }
         public IActionResult Login()
         {
+            if (HttpContext.Session.GetString("adminsession") != null)
+            {   
+                return RedirectToAction("Dashboard", "Admin");
+            }
+            else if (HttpContext.Session.GetString("usersession") != null)
+            {
+                return RedirectToAction("Index");
+            }
+
             ViewData["Error"] = TempData["Error"];
             return View();
         }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Win32;
 using ShradhaBookStore.Models;
+using System.Net;
 
 namespace ShradhaBookStore.Controllers
 {
@@ -400,6 +402,47 @@ namespace ShradhaBookStore.Controllers
             var categories = bookStoreContext.Categories.Where(x => x.Status == 1).ToList();
             ViewData["msg"] = TempData["msg"];
             return View(categories);
+        }
+        public IActionResult Add_Faq()
+        {
+            if (HttpContext.Session.GetString("adminsession") == null)
+            {
+                TempData["Error"] = "Please Login first";
+                return RedirectToAction("Login", "User");
+            }
+            ViewBag.faqs = bookStoreContext.Faqs.ToList();
+            ViewData["msg"] = TempData["msg"];
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Add_Faq(Faq faq)
+        {
+            if (ModelState.IsValid)
+            {
+                bookStoreContext.Faqs.Add(faq);
+                bookStoreContext.SaveChanges();
+                return RedirectToAction("Add_Faq");
+            }
+            return View();
+        }
+        public IActionResult Delete_Faq(int id)
+        {
+            if (HttpContext.Session.GetString("adminsession") == null)
+            {
+                TempData["Error"] = "Please Login first";
+                return RedirectToAction("Login", "User");
+            }
+            var faq = bookStoreContext.Faqs.Find(id);
+            if (faq == null) 
+            {
+                TempData["msg"] = "No Faq Found";
+                return RedirectToAction("Add_Faq");
+            }
+            bookStoreContext.Faqs.Remove(faq);
+            bookStoreContext.SaveChanges();
+
+            TempData["msg"] = "Succesffully Deleted";
+            return RedirectToAction("Add_Faq");
         }
 
     }

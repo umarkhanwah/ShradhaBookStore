@@ -20,7 +20,6 @@ public partial class Category
     [NotMapped]
     public IFormFile ImageFile { get; set; }
 
-
     public virtual ICollection<Category> InverseParentCategory { get; set; } = new List<Category>();
 
     public virtual Category? ParentCategory { get; set; }
