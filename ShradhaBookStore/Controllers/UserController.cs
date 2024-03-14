@@ -316,6 +316,7 @@ namespace ShradhaBookStore.Controllers
                 order.PostalCode = postal_code;
                 order.Phone = phone;
                 bookStoreContext.Orders.Add(order);
+                bookStoreContext.Carts.Remove(item);
             }
             bookStoreContext.SaveChanges();
             return RedirectToAction("Checkout");
