@@ -10,7 +10,7 @@
 
     .shopping-cart {
         width: 750px;
-        height: 423px;
+        min-height: 423px;
         margin: 80px auto;
         background: #FFFFFF;
         box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);
@@ -33,6 +33,7 @@
         height: 120px;
         display: flex;
     }
+   
 
     .item:nth-child(3) {
         border-top: 1px solid #E1E8EE;
@@ -158,8 +159,18 @@
         color:white;
         font-weight:bold;
         padding:20px;
+        text-align:center;
         border-radius:10px;
         margin-left:auto;
+        height:60px;
+        transition:0.5s ease;
+    }
+
+    .Check-btn:hover{
+            background: white;
+            border:1px solid darkcyan;
+            color: darkcyan;
+        text-decoration:none;
     }
 
 </style>
@@ -179,7 +190,11 @@
     <!-- Title -->
     <div class="title">
         Shopping Bag
-    </div>
+    </div>@{
+        var price = "";
+        var quantity = "";
+        var grandtotal = 0;
+    }
     @foreach (var item in Model.Carts)
     {
         <!-- Product #1 -->
@@ -227,10 +242,16 @@
 
             <div class="total-price">RS: @total</div>
         </div>
+        price = item.Product.Price.ToString();
+        quantity = item.Quantity.ToString();
+        grandtotal += int.Parse(price) * int.Parse(quantity);
     }
   <div class="item">
+        <h4 class="h5 w-100" style="text-align:end;">Total : @grandtotal</h4>
+  </div>
+  <div class="item ">
 
-            <a asp-action="Checkout" class="Check-btn">Checkout</a>
+        <a asp-action="Checkout" asp-route-total="@grandtotal" class="Check-btn col-3"><b>Checkout</b></a>
   </div>
       
 </div>

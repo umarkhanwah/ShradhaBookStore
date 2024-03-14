@@ -20,9 +20,14 @@ public partial class User
     [NotMapped]
     public IFormFile ImageFile { get; set; }
 
+
     public string? Address { get; set; }
 
     public int? Status { get; set; }
+
+    public int? Phone { get; set; }
+
+    public string? PostalCode { get; set; }
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 

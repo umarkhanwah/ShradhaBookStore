@@ -1,57 +1,218 @@
-﻿@model ShradhaBookStore.Models.Order
+﻿@model ShradhaBookStore.Models.CartProducts
+@{
+    Layout = "_LayoutGuest";
+}
+<style>
 
-<h4>Order</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Checkout">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ProductId" class="control-label"></label>
-                <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="PaidAmount" class="control-label"></label>
-                <input asp-for="PaidAmount" class="form-control" />
-                <span asp-validation-for="PaidAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Payment" class="control-label"></label>
-                <input asp-for="Payment" class="form-control" />
-                <span asp-validation-for="Payment" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReceiverName" class="control-label"></label>
-                <input asp-for="ReceiverName" class="form-control" />
-                <span asp-validation-for="ReceiverName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+.payment-form .content{
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+	background-color: white;
+}
+
+.payment-form .block-heading{
+    padding-top: 50px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.payment-form .block-heading p{
+	text-align: center;
+	max-width: 420px;
+	margin: auto;
+	opacity:0.7;
+}
+
+.payment-form.dark .block-heading p{
+	opacity:0.8;
+}
+
+.payment-form .block-heading h1,
+.payment-form .block-heading h2,
+.payment-form .block-heading h3 {
+	margin-bottom:1.2rem;
+	color: #3b99e0;
+}
+
+.payment-form form{
+	border-top: 2px solid #5ea4f3;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+	background-color: #ffffff;
+	padding: 0;
+	max-width: 600px;
+	margin: auto;
+    margin-bottom:10vh;
+}
+
+.payment-form .title{
+	font-size: 1em;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	margin-bottom: 0.8em;
+	font-weight: 600;
+	padding-bottom: 8px;
+}
+
+.payment-form .products{
+	background-color: #f7fbff;
+    padding: 25px;
+}
+
+.payment-form .products .item{
+	margin-bottom:1em;
+}
+
+.payment-form .products .item-name{
+	font-weight:600;
+	font-size: 0.9em;
+}
+
+.payment-form .products .item-description{
+	font-size:0.8em;
+	opacity:0.6;
+}
+
+.payment-form .products .item p{
+	margin-bottom:0.2em;
+}
+
+.payment-form .products .price{
+	float: right;
+	font-weight: 600;
+	font-size: 0.9em;
+}
+
+.payment-form .products .total{
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	margin-top: 10px;
+	padding-top: 19px;
+	font-weight: 600;
+	line-height: 1;
+}
+
+.payment-form .card-details{
+	padding: 25px 25px 15px;
+}
+
+.payment-form .card-details label{
+	font-size: 12px;
+	font-weight: 600;
+	margin-bottom: 15px;
+	color: #79818a;
+	text-transform: uppercase;
+}
+
+.payment-form .card-details button{
+	margin-top: 0.6em;
+	padding:12px 0;
+	font-weight: 600;
+}
+
+.payment-form .date-separator{
+ 	margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+</style>
+
+    <section class="payment-form dark">
+        <div class="container">
+            <div class="block-heading">
+                <h2>Checkout</h2>
+                <p>Confirm Your Order , & Get it at your Door Step.</p>
+            </div>
+        @if (@ViewData["error"] != null)
+        {
+
+            <div class="alert alert-danger">
+                @ViewData["error"]
+            </div>
+        }
+            <form asp-action="Checkout">
+                <div class="products">
+                    <h3 class="title">Checkout</h3>
+                    @{
+                        // var total = 0;
+                        dynamic user = ViewData["UserDetails"];
+                        var name = user.Name;
+                        var adress = user.Address;
+                        var phone = user.Phone;
+                        var total= user.Total;
+                     
+                    } 
+
+                    @foreach (var item in Model.Carts)
+                    {
+                        <div class="item">
+                            <span class="price">@item.Product.Price</span>
+                            <p class="item-name">@item.Product.Name</p>
+                            <p class="item-description">Quantity : @item.Quantity</p>
+                        </div>
+                      
+                    }
+                    <div class="item">
+                        <span class="price">Rs: 200</span>
+                        <p class="item-name">Delievery Charges</p>
+                    </div>
+                <div class="total">Total<span class="price"> @(total + 200 )</span></div>
+            </div>
+                <div class="card-details">
+                    <h3 class="title">Delivery Details</h3>
+                    <div class="row">
+                        <div class="form-group col-sm-7">
+                            <label for="card-holder">Receiver Name</label>
+                            <input id="card-holder" type="text" class="form-control" name="name" value="@name"  placeholder="Receiver" aria-label="Receiver" aria-describedby="basic-addon1">
+                            <span name="name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label for="">Phone</label>
+                            <div class="input-group expiration-date">
+                                <span for="" class="input-group-text p-1 mr-2">+92</span>
+                            <input type="text" class="form-control" name="phone" placeholder="300-0000000" value="@phone" name="Phone" aria-label="300-0000000" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-8">
+                            <label for="card-number">Address</label>
+                        <input id="card-number" type="text" name="address" class="form-control" value="@adress" placeholder="Where Do you Live ?" aria-label="Adress" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="postal">Postal Code</label>
+                        <input id="postal" name="postal_code" value="" type="text" class="form-control" placeholder="74900" aria-label="74900" aria-describedby="basic-addon1">
+                        <input name="total" type="hidden" value="@(total+200)" >
+                        </div>
+                           <div class="container">
+                <h3 class="title">Payment Method</h3>
+                <div class="row w-100">
+
+                  <div class="col-6">
+                  <label for="cod">Cash on Deleivery</label>
+                  </div>
+                  <div class="col-5"></div>
+                  <div class="col-1  ">
+
+                    <input id="cod" type="radio" checked class="form-control" >
+                  </div>
+                </div>
+                <div class="row w-100">
+
+                  <div class="col-6">
+                  <label for="card" >Card</label>
+                  </div>
+                  <div class="col-5"></div>
+                  <div class="col-1  ">
+
+                    <input id="card" type="radio" disabled class="form-control" >
+                  </div>
+                </div>
+           
+              </div>
+                        <div class="form-group col-sm-12">
+                            <button type="submit" class="btn btn-primary btn-block">Proceed</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
 

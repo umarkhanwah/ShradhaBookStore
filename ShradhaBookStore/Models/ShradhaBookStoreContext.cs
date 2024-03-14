@@ -96,9 +96,13 @@ public partial class ShradhaBookStoreContext : DbContext
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Orders__3214EC071E866BEA");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC075452F602");
 
             entity.Property(e => e.PaidAmount).HasColumnName("Paid_Amount");
+            entity.Property(e => e.PostalCode)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("Postal_Code");
             entity.Property(e => e.ReceiverName)
                 .HasMaxLength(30)
                 .IsFixedLength()
@@ -180,6 +184,10 @@ public partial class ShradhaBookStoreContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("password");
+            entity.Property(e => e.PostalCode)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("Postal_Code");
             entity.Property(e => e.Status).HasDefaultValue(0);
             entity.Property(e => e.Username)
                 .HasMaxLength(30)

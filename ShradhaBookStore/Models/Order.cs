@@ -23,6 +23,10 @@ public partial class Order
 
     public string ReceiverName { get; set; } = null!;
 
+    public string PostalCode { get; set; } = null!;
+
+    public string? Phone { get; set; }
+
     public virtual Product? Product { get; set; }
 
     public virtual User? User { get; set; }

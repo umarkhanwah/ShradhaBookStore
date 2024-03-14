@@ -126,7 +126,7 @@ namespace ShradhaBookStore.Controllers
             TempData["msg"] = "Product Added to Wishlist";
             return RedirectToAction("Product_info", new { id = product });
         }
-        public IActionResult Add_to_Cart(int product, int quantity)
+        public IActionResult Add_to_Cart(int product,int price, int quantity)
         {
             var user_id = HttpContext.Session.GetInt32("usersession");
             if (user_id == null)
@@ -138,6 +138,7 @@ namespace ShradhaBookStore.Controllers
             cart.ProductId = product;
             cart.UserId = user_id;
             cart.Quantity = quantity;
+            cart.Total = price * quantity;
             bookStoreContext.Carts.Add(cart);
             bookStoreContext.SaveChanges();
             TempData["msg"] = "Product Added to Cart";
@@ -251,6 +252,35 @@ namespace ShradhaBookStore.Controllers
             return RedirectToAction("Show_Cart");
         }
 
+        public IActionResult Checkout(int total)
+        {
+            var user_id = HttpContext.Session.GetInt32("usersession");
+            if (user_id == null)
+            {
+                TempData["Error"] = "Please Login First";
+                return RedirectToAction("Login", "User");
+            }
+            
+            CartProducts cartProducts = new CartProducts();
+            var carts = bookStoreContext.Carts.Where(x=>x.UserId == user_id).ToList();
+            var products = bookStoreContext.Products.ToList();
+            cartProducts.Carts = carts;
+            cartProducts.Products = products;
+            
+            var user = bookStoreContext.Users.Find(user_id);
+            
+            ViewData["UserDetails"] = new
+            {
+               Name = user.Username,
+               Address = user.Address,
+               Phone = user.Phone , 
+               Total = total,
+                // We Will Pass only Provided Data Of User Because of Data Security
+            };
+            ViewData["error"] = TempData["error"];
+            return View(cartProducts);
+        }
+        [HttpPost]
         public IActionResult Checkout()
         {
             var user_id = HttpContext.Session.GetInt32("usersession");
@@ -259,19 +289,38 @@ namespace ShradhaBookStore.Controllers
                 TempData["Error"] = "Please Login First";
                 return RedirectToAction("Login", "User");
             }
-            var carts = bookStoreContext.Carts.Where(x=>x.UserId == user_id).ToList();
-            var user = bookStoreContext.Users.Find(user_id);
-           
-            ViewData["UserDetails"] = new
+            var name = Request.Form["name"];
+            var phone = Request.Form["phone"];
+            var address = Request.Form["address"];
+            var postal_code = Request.Form["postal_code"];
+            var total1 = Request.Form["total"];
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(address) || string.IsNullOrEmpty(postal_code))
             {
-               User = user.Username,
-               Address = user.Address
-                // We Will Pass only Provided Data Of User Because of Data Security
-            }; 
-            return View();
+                TempData["error"] = "Fill All Credentials";
+                return RedirectToAction("Checkout");
+            }
+            var total = int.Parse(total1);
+            var cart = bookStoreContext.Carts.Where(x=>x.UserId == user_id).ToList();
+            Order order = new Order();
+            foreach (var item in cart)
+            {
+                
+                order.ProductId = item.ProductId;
+                order.UserId = item.UserId;
+                order.PaidAmount = 0;
+                order.Payment = total;
+                order.Status = "Placed";
+                order.Quantity = item.Quantity;
+                order.Location = address;
+                order.ReceiverName = name;
+                order.PostalCode = postal_code;
+                order.Phone = phone;
+                bookStoreContext.Orders.Add(order);
+            }
+            bookStoreContext.SaveChanges();
+            return RedirectToAction("Checkout");
         }
-
-        public IActionResult Dashboard()
+            public IActionResult Dashboard()
         {
             ViewData["Name"] = HttpContext.Session.GetString("usersession");
             if (ViewData["Name"] == null)
