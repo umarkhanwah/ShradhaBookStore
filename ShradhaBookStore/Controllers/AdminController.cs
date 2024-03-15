@@ -521,6 +521,55 @@ namespace ShradhaBookStore.Controllers
 
             return RedirectToAction("Update_Manufacturer");
         }
+        public IActionResult Orders()
+        {
+            AllOrders allOrders = new AllOrders();
+            allOrders.Orders = bookStoreContext.Orders.Where(x=>x.Status=="Placed").ToList();
+            allOrders.Categories = bookStoreContext.Categories.ToList();
+            allOrders.Users = bookStoreContext.Users.ToList();
+            allOrders.Products = bookStoreContext.Products.ToList();
+        
+            
+            return View(allOrders);
+        }
+        public IActionResult Cancel_Order(int id)
+        {
+            var order = bookStoreContext.Orders.First(x=>x.Id == id);
+            order.Status = "Canceled";
+            bookStoreContext.Orders.Update(order);
+            bookStoreContext.SaveChanges();
+            return RedirectToAction("Orders");
+        }
+        public IActionResult Cancelled_Orders()
+        {
+            AllOrders allOrders = new AllOrders();
+            allOrders.Orders = bookStoreContext.Orders.Where(x => x.Status == "Canceled").ToList();
+            allOrders.Categories = bookStoreContext.Categories.ToList();
+            allOrders.Users = bookStoreContext.Users.ToList();
+            allOrders.Products = bookStoreContext.Products.ToList();
+
+
+            return View(allOrders);
+        }
+        public IActionResult Delivered(int id)
+        {
+            var order = bookStoreContext.Orders.First(x=>x.Id == id);
+            order.Status = "Delivered";
+            bookStoreContext.Orders.Update(order);
+            bookStoreContext.SaveChanges();
+            return RedirectToAction("Orders");
+        }
+        public IActionResult Delivered_Orders()
+        {
+            AllOrders allOrders = new AllOrders();
+            allOrders.Orders = bookStoreContext.Orders.Where(x => x.Status == "Delivered").ToList();
+            allOrders.Categories = bookStoreContext.Categories.ToList();
+            allOrders.Users = bookStoreContext.Users.ToList();
+            allOrders.Products = bookStoreContext.Products.ToList();
+
+
+            return View(allOrders);
+        }
 
     }
 }

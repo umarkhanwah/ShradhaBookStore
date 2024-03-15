@@ -1,0 +1,96 @@
+﻿@model ShradhaBookStore.Models.AllOrders
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Orders";
+}
+
+<h1>Delivered Orders</h1>
+
+
+@if (@ViewData["msg"] != null)
+{
+
+    <div class="alert alert-warning">
+        @ViewData["msg"]
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Product
+            </th>
+            <th>
+                User
+            </th>
+            <th>
+                Paid Amount
+            </th>
+            <th>
+                Payment
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Adress
+            </th>
+
+            <th>
+                Receiver Name
+            </th>
+            <th>
+                Postal Code
+            </th>
+            <th>
+                Phone
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Orders)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaidAmount)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Payment)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceiverName)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostalCode)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+
+                </td>
+             
+            </tr>
+        }
+    </tbody>
+</table>
