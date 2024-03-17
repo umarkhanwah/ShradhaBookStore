@@ -27,6 +27,7 @@ namespace ShradhaBookStore.Controllers
             var user_id = HttpContext.Session.GetInt32("usersession");
             var User = bookStoreContext.Users.Find(user_id);
             ViewData["Image"] = User.Image;
+            ViewBag.orders = bookStoreContext.Orders.Where(x=>x.UserId==user_id).ToList();
             
             }
             Allproduct alldata = new Allproduct();

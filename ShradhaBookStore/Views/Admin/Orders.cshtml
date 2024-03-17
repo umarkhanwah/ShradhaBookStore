@@ -5,6 +5,7 @@
     ViewData["Title"] = "Orders";
 }
 
+
 <h1>Placed Orders</h1>
 
 
@@ -91,7 +92,7 @@
                 </td>
                 <td>
                     <a asp-action="Delivered" asp-route-id="@item.Id">Delivered</a> |
-                    @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
+                  
                     <a asp-action="Cancel_Order" asp-route-id="@item.Id">Cancel</a>
                 </td>
             </tr>
