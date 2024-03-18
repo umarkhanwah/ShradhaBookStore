@@ -24,10 +24,11 @@ namespace ShradhaBookStore.Controllers
             if (ViewData["Name"] != null)
             {
 
-            var user_id = HttpContext.Session.GetInt32("usersession");
-            var User = bookStoreContext.Users.Find(user_id);
-            ViewData["Image"] = User.Image;
-            ViewBag.orders = bookStoreContext.Orders.Where(x=>x.UserId==user_id).ToList();
+                var user_id = HttpContext.Session.GetInt32("usersession");
+                var User = bookStoreContext.Users.Find(user_id);
+                ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
+                ViewData["Image"] = User.Image;
+                ViewBag.orders = bookStoreContext.Orders.Where(x=>x.UserId==user_id).ToList();
             
             }
             Allproduct alldata = new Allproduct();
@@ -41,13 +42,36 @@ namespace ShradhaBookStore.Controllers
         }
         public IActionResult Faqs()
         {
+            ViewData["Name"] = HttpContext.Session.GetString("usersession");
+            if (ViewData["Name"] != null)
+            {
+
+                var user_id = HttpContext.Session.GetInt32("usersession");
+                var User = bookStoreContext.Users.Find(user_id);
+                ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
+
+                ViewData["Image"] = User.Image;
+                ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
+
+            }
             var faq = bookStoreContext.Faqs.ToList();
             return View(faq);
         }
         public IActionResult Sub_Categories(int id ,  string heading)
         {
-            
+
             ViewData["Name"] = HttpContext.Session.GetString("usersession");
+            if (ViewData["Name"] != null)
+            {
+
+                var user_id = HttpContext.Session.GetInt32("usersession");
+                var User = bookStoreContext.Users.Find(user_id);
+                ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
+
+                ViewData["Image"] = User.Image;
+                ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
+
+            }
             var categories = bookStoreContext.Categories.Where(x => x.ParentCategoryId == id).ToList();
             var category = bookStoreContext.Categories.FirstOrDefault(x => x.Id == id);
             //This Method Returns Category And Products Data, If the User Select a category which has sub categories so show its subs, otherwise show its products
@@ -67,6 +91,17 @@ namespace ShradhaBookStore.Controllers
         public IActionResult Product_Info(int id , string heading)
         {
             ViewData["Name"] = HttpContext.Session.GetString("usersession");
+            if (ViewData["Name"] != null)
+            {
+
+                var user_id = HttpContext.Session.GetInt32("usersession");
+                var User = bookStoreContext.Users.Find(user_id);
+                ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
+
+                ViewData["Image"] = User.Image;
+                ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
+
+            }
             // Retrieve the product with the specified id from the database
             var product = bookStoreContext.Products.FirstOrDefault(p => p.Id == id);
 
@@ -168,14 +203,21 @@ namespace ShradhaBookStore.Controllers
 
         public IActionResult Show_Cart()
         {
+
             //We will Not get User id from url, so no user can see another user's cart by address,
             //We will Get User id in Backend
             var user_id = HttpContext.Session.GetInt32("usersession");
             if (user_id == null)
             {
                 TempData["Error"] = "Please Login First";
+                var User = bookStoreContext.Users.Find(user_id);
+                ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
+
+                ViewData["Image"] = User.Image;
+                ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
                 return RedirectToAction("Login", "User");
             }
+            
             CartProducts cartProducts = new CartProducts();
             var carts = bookStoreContext.Carts.Where(x=>x.UserId == user_id).OrderByDescending(x => x.Id).ToList();
             var products = bookStoreContext.Products.ToList();
@@ -261,6 +303,13 @@ namespace ShradhaBookStore.Controllers
                 TempData["Error"] = "Please Login First";
                 return RedirectToAction("Login", "User");
             }
+  
+            var User = bookStoreContext.Users.Find(user_id);
+            ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
+
+            ViewData["Image"] = User.Image;
+            ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
+
             
             CartProducts cartProducts = new CartProducts();
             var carts = bookStoreContext.Carts.Where(x=>x.UserId == user_id).ToList();
@@ -320,7 +369,7 @@ namespace ShradhaBookStore.Controllers
                 bookStoreContext.Carts.Remove(item);
             }
             bookStoreContext.SaveChanges();
-            return RedirectToAction("Checkout");
+            return RedirectToAction("Index");
         }
             public IActionResult Dashboard()
         {
@@ -367,12 +416,18 @@ namespace ShradhaBookStore.Controllers
 
         public IActionResult Add_Review(int product_id)
         {
-                ViewData["Name"] = HttpContext.Session.GetString("usersession");
-                if (ViewData["Name"] == null)
-                {
-                    TempData["Error"] = "Please Login First";
-                    return RedirectToAction("Login", "User");
-                }
+            ViewData["Name"] = HttpContext.Session.GetString("usersession");
+            if (ViewData["Name"] == null)
+            {
+                TempData["Error"] = "Please Login First";
+                return RedirectToAction("Login", "User");
+            }
+            var user_id = HttpContext.Session.GetInt32("usersession");
+            var User = bookStoreContext.Users.Find(user_id);
+            ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
+
+            ViewData["Image"] = User.Image;
+            ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
             ViewData["Product_id"] = product_id;
             return View();
         }

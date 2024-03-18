@@ -21,6 +21,48 @@
 </head>
 
 <body>
+    @{
+        var counter = 0;
+    }
+
+    <div class="offcanvas offcanvas-end" id="notification">
+        <div class="offcanvas-header border-bottom border-secondary">
+            <h3 class="offcanvas-title h2">Notifications</h3>
+
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            @if (ViewBag.orders != null)
+            {
+
+                @foreach (var item in ViewBag.orders)
+                {
+                    @if (item.Status == "Delivered")
+                    {
+
+                        <a asp-action="Add_Review" class="text-decoration-none" asp-rout-product_id="@item.ProductId">
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <strong>Give a Review..!</strong> Your Order with id "@item.Id" is Delivered SuccessFully .<br /> Click here To Add Review
+                                @* <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> *@
+                            </div>
+                        </a>
+                        counter++;
+                    }
+                    else if (item.Status == "Placed")
+                    {
+                        <a asp-action="Add_Review" class="text-decoration-none" asp-rout-product_id="@item.ProductId">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                Ordeer Placed SucessFully  , Order id is: "@item.Id" <br />
+                                @* <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> *@
+                            </div>
+                        </a>
+                    }
+                }
+            }
+        </div>
+    </div>
+
+
     <!-- Start Top Nav -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
         <div class="container text-light">
@@ -98,18 +140,17 @@
                                 left:15px;
                             }
                         </style>
-                    <a class="nav-icon position-relative text-decoration-none" href="#">
+                        <a class="nav-icon position-relative text-decoration-none" asp-action="Show_Cart">
                         <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                        <span id="cart" class=" translate-middle badge rounded-pill bg-light text-dark">7</span>
+                            <span id="cart" class=" translate-middle badge rounded-pill bg-light text-dark">@ViewData["count_cart"]</span>
                     </a>
                     //Off Canvas for Notifications
                     <a data-bs-toggle="offcanvas" data-bs-target="#notification" class="nav-icon position-relative text-decoration-none" href="#">
                         <i class="fa fa-fw fa-bell text-dark mr-1"></i>
-                        <span id="cart" class=" translate-middle badge rounded-pill bg-light text-dark">7</span>
+                        <span id="cart" class=" translate-middle badge rounded-pill bg-light text-dark">@counter</span>
                     </a>
               
          
-
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="~/Images/Users/@ViewData["Image"]" alt="" width="35" height="35" class="rounded-circle img-fluid">
                         </a>
@@ -160,42 +201,7 @@
             </form>
         </div>
     </div>
-    <div class="offcanvas offcanvas-end" id="notification">
-        <div class="offcanvas-header border-bottom border-secondary">
-            <h3 class="offcanvas-title h2">Notifications</h3>
-
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button> 
-        </div>
-        <div class="offcanvas-body">
-            @if (ViewBag.orders != null)
-            {
-                @foreach (var item in ViewBag.orders)
-                {
-                    @if (item.Status == "Delivered")
-                    {
-
-                        <a asp-action="Add_Review" class="text-decoration-none" asp-rout-product_id="@item.ProductId">
-                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        <strong>Give a Review..!</strong> Your Order with id "@item.Id" is Delivered SuccessFully .<br /> Click here To Add Review
-                        @* <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> *@
-                    </div>
-                        </a>
-                    }
-                    else if (item.Status == "Placed")
-                    {
-                        <a asp-action="Add_Review" class="text-decoration-none" asp-rout-product_id="@item.ProductId">
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                Ordeer Placed SucessFully  , Order id is: "@item.Id" <br /> 
-                                @* <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> *@
-                            </div>
-                        </a>
-                    }
-                }
-            }
-        </div>
-    </div>
-
-
+   
 
         @RenderBody()
 
