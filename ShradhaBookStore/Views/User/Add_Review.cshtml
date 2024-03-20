@@ -7,12 +7,16 @@
 <h4>Review</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-6 overflow-hidden">
         <style>
             .con{
-                height:80vh;
+                min-height:80vh;
+                margin:50px auto;
             }
-          
+          body{
+              width:100vw;
+              overflow-x:hidden;
+          }
 .rate {
     float: left;
     
@@ -25,7 +29,8 @@ form{
     width:100vw;
     justify-content:center;
     align-content:center;
-    align-items:center;
+
+    align-items:flex-start;
 }
 .rate:not(:checked) > input {
     position:absolute;
@@ -63,7 +68,7 @@ form{
 
 <form method="post" asp-action="Add_Review">
 
-              <div class="rate">
+              <div class="rate my-3">
         <input type="radio" id="star5" asp-for="Stars" value="5" />
         <label for="star5" title="text"></label>
         <input type="radio" id="star4" asp-for="Stars" value="4" />
@@ -75,15 +80,21 @@ form{
         <input type="radio" id="star1" asp-for="Stars" value="1" />
         <label for="star1" title="text"></label>
     </div>
-        
-      <h4>Your Feedback </h4>  
-    <textarea asp-for="Comment" id="" cols="30" rows="10"></textarea>
+        <div class="col-5 my-3">
 
-    <input asp-for="ProductId" value="@ViewData["Product_id"]" class="d-none">
+      <h4>Your Feedback </h4>  
+    <textarea class="form-control col-10 my-2" asp-for="Comment" id="" cols="3" rows="10"></textarea>
+
+    <input asp-for="ProductId"  value="@ViewData["Product_id"]" class="d-none">
     <input type="submit" value="submit" class="btn btn-success">
+        </div>
   </form>
         </div>
+    <div class="col-6">
+        <h2 class="display-3">@ViewData["Product_Name"]</h2>
 
+            <img src="~/Images/Products/@ViewData["Product_Image"]" class="img-fluid" />
+    </div>
  
     </div>
 

@@ -40,7 +40,7 @@
                     @if (item.Status == "Delivered")
                     {
 
-                        <a asp-action="Add_Review" class="text-decoration-none" asp-rout-product_id="@item.ProductId">
+                        <a asp-action="Add_Review" class="text-decoration-none" asp-route-product_id="@item.ProductId">
                             <div class="alert alert-info alert-dismissible fade show" role="alert">
                                 <strong>Give a Review..!</strong> Your Order with id "@item.Id" is Delivered SuccessFully .<br /> Click here To Add Review
                                 @* <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> *@

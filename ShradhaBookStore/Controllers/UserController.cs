@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.CodeAnalysis;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using ShradhaBookStore.Models;
 using System.Drawing;
@@ -119,6 +120,7 @@ namespace ShradhaBookStore.Controllers
             allproducts.Products = new List<Product>() { product }; // Place the selected product in the list.
             allproducts.Manufacturers = manufacturer;
             allproducts.Categories = categories;
+            
             ViewData["Heading"] = new { 
                 id = id,
                 Name = heading 
@@ -142,7 +144,18 @@ namespace ShradhaBookStore.Controllers
                 }
             }
             ViewData["msg"] = TempData["Msg"];
-            
+            var reviewsWithUserDetails = bookStoreContext.Reviews
+      .Where(x => x.ProductId == product.Id)
+      .Select(r => new
+      {
+          Review = r,
+          User = bookStoreContext.Users.FirstOrDefault(u => u.Id == r.UserId)
+      })
+      .ToList();
+
+            ViewBag.reviews = reviewsWithUserDetails;
+
+
             return View(allproducts);
         }
 
@@ -210,13 +223,14 @@ namespace ShradhaBookStore.Controllers
             if (user_id == null)
             {
                 TempData["Error"] = "Please Login First";
+                return RedirectToAction("Login", "User");
+            }
                 var User = bookStoreContext.Users.Find(user_id);
                 ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
 
+                ViewData["Name"] = User.Username;
                 ViewData["Image"] = User.Image;
                 ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
-                return RedirectToAction("Login", "User");
-            }
             
             CartProducts cartProducts = new CartProducts();
             var carts = bookStoreContext.Carts.Where(x=>x.UserId == user_id).OrderByDescending(x => x.Id).ToList();
@@ -414,7 +428,7 @@ namespace ShradhaBookStore.Controllers
             return uniquefilename;
         }
 
-        public IActionResult Add_Review(int product_id)
+        public IActionResult Add_Review(int product_id )
         {
             ViewData["Name"] = HttpContext.Session.GetString("usersession");
             if (ViewData["Name"] == null)
@@ -428,6 +442,8 @@ namespace ShradhaBookStore.Controllers
 
             ViewData["Image"] = User.Image;
             ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
+            ViewData["Product_Image"] = bookStoreContext.Products.First(x=>x.Id== product_id).Image;
+            ViewData["Product_Name"] = bookStoreContext.Products.First(x=>x.Id== product_id).Name;
             ViewData["Product_id"] = product_id;
             return View();
         }
@@ -438,12 +454,15 @@ namespace ShradhaBookStore.Controllers
             {
                 review.UserId = HttpContext.Session.GetInt32("usersession");
                 bookStoreContext.Reviews.Add(review);
+                var order = bookStoreContext.Orders.First(x => x.ProductId == review.ProductId && x.UserId == review.UserId&& x.Status == "Delivered");
+                order.Status = "Reviewed";
+                bookStoreContext.Orders.Update(order);
                 bookStoreContext.SaveChanges();
                 TempData["msg"] = "Successfully Added";
-                return RedirectToAction("Show_Products");
+                return RedirectToAction("Show_Cart");
             }
             TempData["msg"] = "Model State not valid";
-            return RedirectToAction("Show_Products");
+            return RedirectToAction("Show_Cart");
         }
         public IActionResult Login()
         {
