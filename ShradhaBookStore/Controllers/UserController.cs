@@ -505,7 +505,7 @@ namespace ShradhaBookStore.Controllers
                 {
                     HttpContext.Session.SetString("usersession", myuser.Username);
                     HttpContext.Session.SetInt32("usersession", myuser.Id);
-                    return RedirectToAction("Dashboard");
+                    return RedirectToAction("Index");
                 }
                 else
                 {

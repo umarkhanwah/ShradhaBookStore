@@ -392,6 +392,39 @@ namespace ShradhaBookStore.Controllers
             allproduct.Manufacturers = manufacturers;
             return View(allproduct);
         }
+
+        public IActionResult Inward_Products()
+        {
+            var products = bookStoreContext.Products.ToList();
+
+            // Create a list of SelectListItem
+            var selectList = products.Select(p => new SelectListItem
+            {
+                Text = p.Name, // Display property
+                Value = p.Id.ToString() // Value property
+            }).ToList();
+
+            // Optionally, you can add a default option
+            selectList.Insert(0, new SelectListItem
+            {
+                Text = "Select a Product",
+                Value = ""
+            });
+
+            ViewBag.Product = selectList;
+            ViewData["msg"] = TempData["msg"];
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Inward_Products(Product product)
+        {
+            var old = bookStoreContext.Products.First(x=>x.Id == product.Id);
+            old.Quantity = product.Quantity;
+            bookStoreContext.Products.Update(old);
+            bookStoreContext.SaveChanges();
+            TempData["msg"] = "("+old.Name+")  Inwarded "+product.Quantity+" Pieces Succesfully..!";
+            return RedirectToAction("Inward_Products");
+        }
         public IActionResult Show_De_Categories()
         {
             if (HttpContext.Session.GetString("adminsession") == null)
