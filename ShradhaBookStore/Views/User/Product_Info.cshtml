@@ -71,16 +71,7 @@
                                 <input type="hidden" name="product-title" value="Activewear">
                                 <div class="row">
                                     <div class="col-auto">
-                                        <ul class="list-inline pb-3">
-                                            <li class="list-inline-item">
-                                                Size :
-                                                <input type="hidden" name="product-size" id="product-size" value="S">
-                                            </li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">S</span></li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">M</span></li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">L</span></li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">XL</span></li>
-                                        </ul>
+                                       
                                     </div>
                                     <div class="col-auto">
                                         <ul class="list-inline pb-3">
@@ -125,407 +116,253 @@
             </div>
         }
     </div>
+
+
 </section>
 <!-- Close Content -->
 <!-- Start Article -->
+<section class="my-5">
+<h3 class="display-5 text-center">Reviews</h3>
+
 @{
     var reviewsWithUserDetails = ViewBag.reviews;
 }
 
 @if (reviewsWithUserDetails.Count > 0)
 {
-    <style>
-        .responsive-cell-block {
-  min-height: 75px;
+
+
+<!--=============== FONT AWESOME ===============-->
+<style>
+   
+
+
+.testimonial-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  gap: 2rem;
+  background-color: #fff;
+  color: #333;
+  border-radius: 15px;
+  margin: 20px auto;
+  padding: 50px 80px;
+  width: 800px;
+  min-height: 430px;
+  position: relative;
 }
 
-.text-blk {
-  margin-top: 0px;
-  margin-right: 0px;
-  margin-bottom: 0px;
-  margin-left: 0px;
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-bottom: 0px;
-  padding-left: 0px;
-  line-height: 25px;
-  height: 50%;
-  width: 100%;
+.stars span{
+  font-size: 35px;
 }
 
-img {
+.testimonial {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-weight: 900;
+  font-size:20px;
+  height: 100%;
+  line-height: 28px;
+  margin: 0;
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+   
+.user .user-image {
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
   object-fit: cover;
 }
 
-.responsive-container-block {
-  min-height: 75px;
-  height: fit-content;
-  width: 100%;
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-bottom: 0px;
-  padding-left: 0px;
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 0px;
-  margin-right: auto;
-  margin-bottom: 0px;
-  margin-left: auto;
-  justify-content: flex-start;
-}
-
-.responsive-container-block.bg {
-  width: 100%;
-  height: auto;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  max-width: 1320px;
-  margin: 50px 0 50px 0;
-}
-
-.text-blk.title {
-  width: 100%;
-  height: auto;
+.user .user-details {
   text-align: center;
-  font-size: 36px;
-  line-height: 45px;
-  font-weight: 900;
-  margin-top: 0px;
-  margin-right: 0px;
-  margin-bottom: 0px;
-  margin-left: 0px;
-  margin: 0 0 15px 0;
 }
 
-* {
-  font-family: Nunito, sans-serif;
+.user .username {
+  margin: 0;
+  font-size: 24px;
 }
 
-.text-blk.desc {
-  text-align: center;
-  font-size: 18px;
-  line-height: 28px;
-  height: auto;
-  margin-top: 0px;
-  margin-right: 0px;
-  margin-bottom: 50px;
-  margin-left: 0px;
-  max-width: 750px;
+.user .role {
+  margin: 0;
+  font-size: 24px;
 }
 
-.responsive-container-block.blocks {
-  width: 100%;
-  min-height: 0px;
-  justify-content: space-between;
-  max-width: 1320px;
+            .testimonial-container {
+    box-shadow:10px 10px 10px 10px silver;
 }
 
-.responsive-cell-block.wk-desk-1.wk-tab-1.wk-mobile-1.wk-ipadp-1.content {
-  width: 30%;
-  height: auto;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 20px 7px;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  border-bottom-right-radius: 16px;
-  border-bottom-left-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.text-blk.info-block {
-  width: 85%;
-  height: auto;
-  font-size: 18px;
-  line-height: 30px;
-  margin-top: 30px;
-  margin-right: 0px;
-  margin-bottom: 50px;
-  margin-left: 0px;
-  margin: 30px 0 30px 0;
-}
-
-.responsive-container-block.person {
-  width: 90%;
-  min-height: 0px;
-  height: auto;
-  margin-top: 0px;
-  margin-right: 31.25px;
-  margin-bottom: 20px;
-  margin-left: 31.25px;
-}
-
-.responsive-cell-block.wk-desk-6.wk-ipadp-6.wk-tab-12.wk-mobile-12.icon-block {
-  width: 22%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.responsive-cell-block.wk-desk-6.wk-ipadp-6.wk-tab-12.wk-mobile-12.text-block {
-  width: 78%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.text-blk.name {
-  font-size: 18px;
-  line-height: 20px;
-  font-weight: 900;
-  height: auto;
-  width: 100%;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 0px;
-  padding-left: 10px;
-}
-
-.text-blk.desig {
-  line-height: 16px;
-  height: auto;
-  width: 100%;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-}
-
-.profile-img {
-  width: 60px;
-  height: 60px;
-  border-top-left-radius: 50%;
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 50%;
-  border-bottom-left-radius: 50%;
-}
-
-.responsive-container-block.big-container {
-  justify-content: center;
-  padding: 0 50px 0 50px;
-}
-
-
-
-  .responsive-cell-block.wk-desk-1.wk-tab-1.wk-mobile-1.wk-ipadp-1.content.bottom {
-    margin-top: 5%;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    margin-left: 25%;
-  }
-
-  .text-blk.desc {
-    width: 70%;
-  }
-
-  .responsive-container-block.person {
-    margin-top: 5%;
-    margin-right: 31.25px;
-    margin-bottom: 0px;
-    margin-left: 31.25px;
-  }
-
-  .text-blk.title {
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-  }
-
-  .responsive-container-block.person {
-    margin-top: 21.9375px;
-    margin-right: 31.25px;
-    margin-bottom: 20px;
-    margin-left: 31.25px;
-  }
-
-  .text-blk.info-block {
-    margin-top: 30px;
-    margin-right: 0px;
-    margin-bottom: 25px;
-    margin-left: 0px;
-  }
-}
-
-
-
-  .text-blk.info-block {
-    height: 50%;
-    font-size: 17px;
-  }
-
-  .responsive-cell-block.wk-desk-1.wk-tab-1.wk-mobile-1.wk-ipadp-1.content {
-    width: 100%;
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 5%;
-    margin-left: 0px;
-  }
-
-  .text-blk.desc {
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 80px;
-    margin-left: 0px;
-    width: 85%;
-    font-size: 17px;
-  }
-
-  .text-blk.title {
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-    font-size: 30px;
-  }
-
-  .responsive-cell-block.wk-desk-1.wk-tab-1.wk-mobile-1.wk-ipadp-1.content.bottom {
-    width: 100%;
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-  }
-
-  .responsive-container-block.blocks {
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-  }
-
-  .responsive-container-block.bg {
-    flex-wrap: nowrap;
-  }
-
-  .responsive-container-block.person {
-    margin-top: 0px;
-    margin-right: 31.25px;
-    margin-bottom: 20px;
-    margin-left: 31.25px;
-  }
-
-  .text-blk.info-block {
-    margin-top: 30px;
-    margin-right: 0px;
-    margin-bottom: 30px;
-    margin-left: 0px;
-  }
-
-  .text-blk.desc {
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 30px;
-    margin-left: 0px;
-  }
-
-  .text-blk.desig {
-    font-size: 15px;
-  }
-
-  .text-blk.name {
-    font-size: 17px;
-  }
-}
-
-
-
-  .text-blk.desc {
-    width: 90%;
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-    font-size: 16px;
-    line-height: 24px;
-  }
-
-  .text-blk.title {
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-    font-size: 26px;
-  }
-
-  .text-blk.info-block {
-    margin-top: 30px;
-    margin-right: 0px;
-    margin-bottom: 50px;
-    margin-left: 0px;
-    font-size: 16px;
-    line-height: 26px;
-    margin: 30px 0 20px 0;
-  }
-
-  .text-blk.desc {
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 30px;
-    margin-left: 0px;
-  }
-
-  .responsive-container-block.big-container {
-    padding: 0 30px 0 30px;
-  }
-
-  .text-blk.name {
-    font-size: 17px;
-  }
-
-  .text-blk.desig {
-    font-size: 15px;
-  }
-}
-    </style>
-    <div class="responsive-container-block big-container">
-        <div class="responsive-container-block bg">
-            <p class="text-blk title">
-                Reviews
-            </p>
-            <p class="text-blk desc">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit massa ante viverra non maecenas. Faucibus amet quis duis egestas.
-            </p>
-            <div class="responsive-container-block blocks">
-                @foreach (var item in reviewsWithUserDetails)
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @for (int i = 0; i < reviewsWithUserDetails.Count; i++)
                 {
+                    var item = reviewsWithUserDetails[i];
                     var review = item.Review;
                     var user = item.User;
-                <div class="responsive-cell-block wk-desk-1 wk-tab-1 wk-mobile-1 wk-ipadp-1 content">
-                    <p class="text-blk info-block">
-                        @review.Comment
-                    </p>
-                    <div class="responsive-container-block person">
-                        <div class="responsive-cell-block wk-desk-6 wk-ipadp-6 wk-tab-12 wk-mobile-12 icon-block">
-                            <img class="profile-img" src="@user.Image">
-                        </div>
-                        <div class="responsive-cell-block wk-desk-6 wk-ipadp-6 wk-tab-12 wk-mobile-12 text-block">
-                            <p class="text-blk name">
-                                @user.Username
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <div class="testimonial-container">
+                            <div class="stars">
+                                @for (int s = 0; s < review.Stars; s++)
+                                {
+                                <span class="material-symbols-outlined" style="font-variation-settings:
+                                'FILL' 1,
+                                'wght' 400,
+                                'GRAD' 0,
+                                'opsz' 24; color:gold;">star</span>
+                                }
+                                @{
+                                    var white = 5 - review.Stars;
+                                }
+                                @for (int s = 0; s < white; s++)
+                                {
+                                <span class="material-symbols-outlined">star</span>
+                                    
+                            
+                                    
+                                }
+                       
+                            </div>
+                            <p class="testimonial">
+                                @review.Comment
                             </p>
-                            <p class="text-blk desig">
-                                @user.Usertype
-                            </p>
+                            <div class="user">
+                                <img src="~/Images/Users/@user.Image" alt="user" class="user-image" />
+                                <div class="user-details">
+                                    <h4 class="username">@user.Username</h4>
+                                    <p class="role">@user.Usertype</p>
+                                </div>
+                            </div>
+                            <!-- <div class="progress-dots" id="progress-dots"></div> -->
                         </div>
                     </div>
-                </div>
-            
-            }</div>
+                }
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="material-symbols-outlined text-dark">
+                    chevron_left
+                </span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="material-symbols-outlined text-dark">
+                    chevron_right
+                </span>
+            </button>
         </div>
-    </div>
+@* <script>
+    const testimonialsContainer = document.querySelector(".testimonials-container");
+const testimonial = document.querySelector(".testimonial");
+const userImage = document.querySelector(".user-image");
+const username = document.querySelector(".username");
+const role = document.querySelector(".role");
+const btnPrev = document.getElementById("btn-prev");
+const btnNext = document.getElementById("btn-next");
+const progressDots = document.getElementById("progress-dots");
 
+const testimonials = [
+  {
+    name: "June Cha",
+    position: "Software Engineer",
+    photo: "https://randomuser.me/api/portraits/women/44.jpg",
+    text:
+      "This guy is an amazing frontend developer that delivered the task exactly how we need it, do your self a favor and hire him, you will not be disappointed by the work delivered. He will go the extra mile to make sure that you are happy with your project. I will surely work again with him!"
+  },
+  {
+    name: "Iida Niskanen",
+    position: "Data Entry",
+    photo: "https://randomuser.me/api/portraits/women/67.jpg",
+    text:
+      "This guy is a hard worker. Communication was also very good with him and he was very responsive all the time, something not easy to find in many freelancers. We'll definitely repeat with him."
+  },
+  {
+    name: "Renee Sims",
+    position: "Receptionist",
+    photo: "https://randomuser.me/api/portraits/women/8.jpg",
+    text:
+      "This guy does everything he can to get the job done and done right. This is the second time I've hired him, and I'll hire him again in the future."
+  },
+  {
+    name: "Sasha Ho",
+    position: "Accountant",
+    photo:
+      "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?h=350&auto=compress&cs=tinysrgb",
+    text:
+      "This guy is a top notch designer and front end developer. He communicates well, works fast and produces quality work. We have been lucky to work with him!"
+  },
+  {
+    name: "Veeti Seppanen",
+    position: "Director",
+    photo: "https://randomuser.me/api/portraits/men/97.jpg",
+    text:
+      "This guy is a young and talented IT professional, proactive and responsible, with a strong work ethic. He is very strong in PSD2HTML conversions and HTML/CSS technology. He is a quick learner, eager to learn new technologies. He is focused and has the good dynamics to achieve due dates and outstanding results."
+  }
+];
 
+let idx = 0;
+
+testimonials.forEach((testimonial) => {
+  const dot = document.createElement("div");
+  dot.classList.add("progress-dot");
+  progressDots.appendChild(dot);
+});
+
+function displayTestimonial() {
+  const { name, position, photo, text } = testimonials[idx];
+
+  testimonial.innerHTML = text;
+  userImage.src = photo;
+  username.innerHTML = name;
+  role.innerHTML = position;
+
+  updateProgressDots();
+}
+
+function updateProgressDots() {
+  const dots = progressDots.children;
+  [...dots].forEach((dot) => {
+    dot.classList.remove("active");
+  });
+  dots[idx].classList.add("active");
+}
+
+btnNext.addEventListener("click", () => {
+  idx === testimonials.length - 1 ? (idx = 0) : idx++;
+  console.log(idx);
+
+  displayTestimonial();
+});
+
+btnPrev.addEventListener("click", () => {
+  idx === 0 ? (idx = testimonials.length - 1) : idx--;
+  console.log(idx);
+
+  displayTestimonial();
+});
+
+displayTestimonial();
+
+</script> *@
 
 }
 else
 {
     <p>No reviews available for this product.</p>
 }
+</section>
 
 @* 
  <section class="py-5">
