@@ -175,7 +175,7 @@ namespace ShradhaBookStore.Controllers
             TempData["msg"] = "Product Added to Wishlist";
             return RedirectToAction("Product_info", new { id = product });
         }
-        public IActionResult Add_to_Cart(int product,int price, int quantity)
+        public IActionResult Add_to_Cart(int productid,int price, int quantity)
         {
             var user_id = HttpContext.Session.GetInt32("usersession");
             if (user_id == null)
@@ -184,14 +184,20 @@ namespace ShradhaBookStore.Controllers
                 return RedirectToAction("Login", "User");
             }
             Cart cart = new Cart();
-            cart.ProductId = product;
+            cart.ProductId = productid;
             cart.UserId = user_id;
             cart.Quantity = quantity;
             cart.Total = price * quantity;
             bookStoreContext.Carts.Add(cart);
+            //Selecting product and deducting quantiyt from invetory
+            var product = bookStoreContext.Products.First(x=>x.Id == productid);
+            product.Quantity -= quantity;
+            bookStoreContext.Products.Update(product);
+
+
             bookStoreContext.SaveChanges();
             TempData["msg"] = "Product Added to Cart";
-            return RedirectToAction("Product_info", new { id = product });
+            return RedirectToAction("Product_info", new { id = productid });
         }
         public IActionResult Remove_Wishlist(int wishid)
         {
@@ -252,6 +258,8 @@ namespace ShradhaBookStore.Controllers
             }
             cart.Quantity += 1;
             bookStoreContext.Carts.Update(cart);
+            var product = bookStoreContext.Products.First(x => x.Id == cart.ProductId);
+            product.Quantity -= 1;
             bookStoreContext.SaveChanges();
             //TempData["msg"] = "Quantity Incremented";
             return RedirectToAction("Show_Cart");
@@ -267,6 +275,8 @@ namespace ShradhaBookStore.Controllers
             }
             cart.Quantity -= 1;
             bookStoreContext.Carts.Update(cart);
+            var product = bookStoreContext.Products.First(x => x.Id == cart.ProductId);
+            product.Quantity += 1;
             bookStoreContext.SaveChanges();
             //TempData["msg"] = "Quantity Incremented";
             return RedirectToAction("Show_Cart");
