@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Microsoft.EntityFrameworkCore;
 using ShradhaBookStore.Models;
 using System.Drawing;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -29,6 +30,7 @@ namespace ShradhaBookStore.Controllers
                 var User = bookStoreContext.Users.Find(user_id);
                 ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
                 ViewData["Image"] = User.Image;
+                ViewData["User_id"] = user_id;
                 ViewBag.orders = bookStoreContext.Orders.Where(x=>x.UserId==user_id).ToList();
             
             }
@@ -52,6 +54,7 @@ namespace ShradhaBookStore.Controllers
                 ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
 
                 ViewData["Image"] = User.Image;
+                ViewData["User_id"] = user_id;
                 ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
 
             }
@@ -70,6 +73,7 @@ namespace ShradhaBookStore.Controllers
                 ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
 
                 ViewData["Image"] = User.Image;
+                ViewData["User_id"] = user_id;
                 ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
 
             }
@@ -100,6 +104,7 @@ namespace ShradhaBookStore.Controllers
                 ViewData["count_cart"] = bookStoreContext.Carts.Where(x => x.UserId == user_id).Count();
 
                 ViewData["Image"] = User.Image;
+                ViewData["User_id"] = user_id;
                 ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
 
             }
@@ -236,7 +241,8 @@ namespace ShradhaBookStore.Controllers
 
                 ViewData["Name"] = User.Username;
                 ViewData["Image"] = User.Image;
-                ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
+            ViewData["User_id"] = user_id;
+            ViewBag.orders = bookStoreContext.Orders.Where(x => x.UserId == user_id).ToList();
             
             CartProducts cartProducts = new CartProducts();
             var carts = bookStoreContext.Carts.Where(x=>x.UserId == user_id).OrderByDescending(x => x.Id).ToList();
@@ -398,13 +404,35 @@ namespace ShradhaBookStore.Controllers
             public IActionResult Shop()
         {
             Allproduct allproduct = new Allproduct();
-            var products = bookStoreContext.Products.Where(x => x.Status != 1).ToList();
-            var categories = bookStoreContext.Categories.ToList();
-            var manufacturers = bookStoreContext.Manufacturers.ToList();
-            allproduct.Products = products;
-            allproduct.Categories = categories;
-            allproduct.Manufacturers = manufacturers;
+
+            var productsWithReviews = bookStoreContext.Products
+                .Include(p => p.Reviews) // Include the related reviews
+                .Where(p => p.Status != 1)
+                .Select(p => new
+                {
+                    Product = p,
+                    FirstReviewStars = p.Reviews.OrderBy(r => r.Id).Select(r => (int?)r.Stars).FirstOrDefault(), // Fetch stars from the first review
+                    ReviewCount = p.Reviews.Count() // Count of reviews
+                })
+                .ToList();
+
+            // Map the result to Allproduct model
+            allproduct.Products = productsWithReviews.Select(p => p.Product).ToList();
+            allproduct.Categories = bookStoreContext.Categories.ToList();
+            allproduct.Manufacturers = bookStoreContext.Manufacturers.ToList();
+            allproduct.FirstReviewStars = productsWithReviews.ToDictionary(p => p.Product.Id, p => p.FirstReviewStars);
+            allproduct.ReviewCounts = productsWithReviews.ToDictionary(p => p.Product.Id, p => p.ReviewCount);
+
             return View(allproduct);
+
+            //Allproduct allproduct = new Allproduct();
+            //var products = bookStoreContext.Products.Where(x => x.Status != 1).ToList();
+            //var categories = bookStoreContext.Categories.ToList();
+            //var manufacturers = bookStoreContext.Manufacturers.ToList();
+            //allproduct.Products = products;
+            //allproduct.Categories = categories;
+            //allproduct.Manufacturers = manufacturers;
+            //return View(allproduct);
         }
         public IActionResult Register()
         {
@@ -422,6 +450,25 @@ namespace ShradhaBookStore.Controllers
                 return RedirectToAction("Login");
             }
             return View();
+        }
+        public IActionResult Edit_Profile(int id)
+        {
+            var user = bookStoreContext.Users.First(x=>x.Id == id);
+            return View(user);
+        }
+        [HttpPost]
+        public IActionResult Edit_Profile(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                string uniquefilename = User_Image(user);
+                user.Image = uniquefilename;
+                bookStoreContext.Users.Update(user);
+                bookStoreContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Edit_Profile");
+            
         }
         private string User_Image(User user)
         {

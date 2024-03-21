@@ -22,6 +22,7 @@ namespace ShradhaBookStore.Controllers
                 TempData["Error"] = "Please Login first";
                 return RedirectToAction("Login", "User");
             }
+            ViewData["Admin_id"] = HttpContext.Session.GetInt32("adminsession");
             ViewData["Products"] = bookStoreContext.Products.Count();
             ViewData["Quantity"] = bookStoreContext.Products.Sum(x=>x.Quantity);
             ViewData["Placed"] = bookStoreContext.Orders.Count(x=>x.Status=="Placed");

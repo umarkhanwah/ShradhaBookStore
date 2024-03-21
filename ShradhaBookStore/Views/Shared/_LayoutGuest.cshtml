@@ -102,13 +102,13 @@
                             <a class="nav-link" asp-action="" asp-controller="User">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" >About us</a>
+                            <a class="nav-link" asp-action="About">About us</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-action="Shop">Shop</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" >Contact</a>
+                            <a class="nav-link" asp-action="Contact">Contact</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-action="Faqs">Faqs</a>
@@ -156,18 +156,11 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up " aria-labelledby="drop2" data-bs-popper="static">
                                 <div class="message-body">
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-user fs-6"></i>
-                      <p class="mb-0 fs-5">My Profile</p>
-                    </a>
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-mail fs-6"></i>
-                      <p class="mb-0 fs-5">My Account</p>
-                    </a>
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-list-check fs-6"></i>
-                      <p class="mb-0 fs-5">My Task</p>
-                    </a>
+                                <a asp-action="Edit_Profile" asp-route-id="@ViewData["User_id"]" class="d-flex align-items-center gap-2 dropdown-item">
+                                    <i class="ti ti-user fs-6"></i>
+                                    <p class="mb-0 fs-6">Edit Profile</p>
+                                </a>  
+                               
                     <a asp-action="Logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                   </div>
                         </div>
@@ -211,7 +204,7 @@
             <div class="row">
 
                 <div class="col-md-4 pt-5">
-                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Zay Shop</h2>
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Shradha BookStore</h2>
                     <ul class="list-unstyled text-light footer-link-list">
                         <li>
                             <i class="fas fa-map-marker-alt fa-fw"></i>
@@ -244,11 +237,11 @@
                 <div class="col-md-4 pt-5">
                     <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
                     <ul class="list-unstyled text-light footer-link-list">
-                        <li><a class="text-decoration-none" href="#">Home</a></li>
-                        <li><a class="text-decoration-none" href="#">About Us</a></li>
-                        <li><a class="text-decoration-none" href="#">Shop Locations</a></li>
-                        <li><a class="text-decoration-none" href="#">FAQs</a></li>
-                        <li><a class="text-decoration-none" href="#">Contact</a></li>
+                        <li><a class="text-decoration-none" asp-action="Index">Home</a></li>
+                        <li><a class="text-decoration-none" asp-action="About">About Us</a></li>
+                        <li><a class="text-decoration-none" asp-action="Shop">Shop</a></li>
+                        <li><a class="text-decoration-none" asp-action="Faqs">FAQs</a></li>
+                        <li><a class="text-decoration-none" asp-action="Contact">Contact</a></li>
                     </ul>
                 </div>
 
