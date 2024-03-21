@@ -1,0 +1,61 @@
+﻿@model List<ShradhaBookStore.Models.ReviewViewModel>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutAdmin";
+}
+@foreach (var reviewDetails in Model)
+{
+    <div>
+        <p>User: @reviewDetails.User.Username</p>
+        <p>Product: @reviewDetails.Product.Name</p>
+        <p>Comment: @reviewDetails.Review.Comment</p>
+        <!-- Add other review details as needed -->
+    </div>
+}
+@if (@ViewData["msg"] != null)
+{
+
+    <div class="alert alert-warning">
+        @ViewData["msg"]
+    </div>
+}
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>Id</th>
+            <th>Usrname</th>
+            <th>Product Name</th>
+            <th>Stars</th>
+            <th>Comment</th>
+        
+            <th>Action</th>
+        
+        </tr>
+    </thead>
+    @{
+        int counter = 1;
+    }
+    @foreach (var e in Model)
+    {
+
+        <tr>
+            <td>@e.Review.Id</td>
+            <td>@e.User.Username</td>
+          
+            <td> <a asp-action="Product_info" asp-controller="User" asp-route-productid="@e.Review.ProductId">@e.Product.Name</a></td>
+            <td>@e.Review.Stars</td>
+            <td>@e.Review.Comment</td>
+            
+
+            
+            <td> <a asp-route-id="@e.Review.Id" asp-action="Delete_Review">Delete</a> </td>
+     
+        </tr>
+
+        counter++;
+    }
+</table>

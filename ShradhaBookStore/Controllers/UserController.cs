@@ -395,15 +395,16 @@ namespace ShradhaBookStore.Controllers
             bookStoreContext.SaveChanges();
             return RedirectToAction("Index");
         }
-            public IActionResult Dashboard()
+            public IActionResult Shop()
         {
-            ViewData["Name"] = HttpContext.Session.GetString("usersession");
-            if (ViewData["Name"] == null)
-            {
-                TempData["Error"] = "Please Login First";
-                return RedirectToAction("Login", "User");
-            }
-            return View();
+            Allproduct allproduct = new Allproduct();
+            var products = bookStoreContext.Products.Where(x => x.Status != 1).ToList();
+            var categories = bookStoreContext.Categories.ToList();
+            var manufacturers = bookStoreContext.Manufacturers.ToList();
+            allproduct.Products = products;
+            allproduct.Categories = categories;
+            allproduct.Manufacturers = manufacturers;
+            return View(allproduct);
         }
         public IActionResult Register()
         {

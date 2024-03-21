@@ -7,11 +7,209 @@
 }
 
 
-<h1>Hurrreeeeeyyyy @ViewData["Name"] ... ! <br /> You're an Admin</h1>
-<a asp-action="add_category" class="btn btn-outline-dark"> Add a Category</a>
+<div class="row">
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row alig n-items-start">
+                    <div class="col-8">
+                        <h5 class="card-title mb-9 fw-semibold">Available Products</h5>
+                        <h4 class="fw-semibold mb-3">@ViewData["Products"]</h4>
+                        <div class="d-flex align-items-center pb-1">
+                            <span class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-arrow-down-right text-danger"></i>
+                            </span>
+                            <p class="text-dark me-1 fs-3 mb-0">Updated Today</p>
+                            <p class="fs-3 mb-0">@* last year *@</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="d-flex justify-content-end">
+                            <div class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-package fs-6"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="earning"></div>
+        </div>
+
+    </div>
+        <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row alig n-items-start">
+                    <div class="col-8">
+                        <h5 class="card-title mb-9 fw-semibold">Inventory</h5>
+                        <h4 class="fw-semibold mb-3">@ViewData["Quantity"]</h4>
+                        <div class="d-flex align-items-center pb-1">
+                            <span class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-arrow-down-right text-danger"></i>
+                            </span>
+                            <p class="text-dark me-1 fs-3 mb-0">Updated Today</p>
+                            <p class="fs-3 mb-0">@* last year *@</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="d-flex justify-content-end">
+                            <div class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                
+                                <span class="material-symbols-outlined">
+                                    inventory_2
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="earning"></div>
+        </div>
+        </div>
+        <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row alig n-items-start">
+                    <div class="col-8">
+                        <h5 class="card-title mb-9 fw-semibold">Users</h5>
+                        <h4 class="fw-semibold mb-3">@ViewData["Users"]</h4>
+                        <div class="d-flex align-items-center pb-1">
+                            <span class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-arrow-down-right text-danger"></i>
+                            </span>
+                            <p class="text-dark me-1 fs-3 mb-0">Updated Today</p>
+                            <p class="fs-3 mb-0">@* last year *@</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="d-flex justify-content-end">
+                            <div class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-user fs-6"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="earning"></div>
+        </div>
+        </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row alig n-items-start">
+                    <div class="col-8">
+                        <h5 class="card-title mb-9 fw-semibold">Products Delivered</h5>
+                        <h4 class="fw-semibold mb-3">@ViewData["Delivered"]</h4>
+                        <div class="d-flex align-items-center pb-1">
+                            <span class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-arrow-down-right text-danger"></i>
+                            </span>
+                            <p class="text-dark me-1 fs-3 mb-0">Updated Today</p>
+                            <p class="fs-3 mb-0">@* last year *@</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="d-flex justify-content-end">
+                            <div class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-truck fs-6"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="earning"></div>
+        </div>
+    </div>
+        <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row alig n-items-start">
+                    <div class="col-8">
+                        <h5 class="card-title mb-9 fw-semibold">Product Reviews</h5>
+                        <h4 class="fw-semibold mb-3">@ViewData["Reviews"]</h4>
+                        <div class="d-flex align-items-center pb-1">
+                            <span class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-arrow-down-right text-danger"></i>
+                            </span>
+                            <p class="text-dark me-1 fs-3 mb-0">Updated Today</p>
+                            <p class="fs-3 mb-0">@* last year *@</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="d-flex justify-content-end">
+                            <div class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-message fs-6"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="earning"></div>
+        </div>
+        </div>
+        <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row alig n-items-start">
+                    <div class="col-8">
+                        <h5 class="card-title mb-9 fw-semibold">Orders Placed</h5>
+                        <h4 class="fw-semibold mb-3">@ViewData["Placed"]</h4>
+                        <div class="d-flex align-items-center pb-1">
+                            <span class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-arrow-down-right text-danger"></i>
+                            </span>
+                            <p class="text-dark me-1 fs-3 mb-0">Updated Today</p>
+                            <p class="fs-3 mb-0">@* last year *@</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="d-flex justify-content-end">
+                            <div class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                <span class="material-symbols-outlined">
+                                    orders
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="earning"></div>
+        </div>
+        </div>
+        <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row alig n-items-start">
+                    <div class="col-8">
+                        <h5 class="card-title mb-9 fw-semibold">Added Carts</h5>
+                        <h4 class="fw-semibold mb-3">@ViewData["Cart"]</h4>
+                        <div class="d-flex align-items-center pb-1">
+                            <span class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-arrow-down-right text-danger"></i>
+                            </span>
+                            <p class="text-dark me-1 fs-3 mb-0">Updated Today</p>
+                            <p class="fs-3 mb-0">@* last year *@</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="d-flex justify-content-end">
+                            <div class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-shopping-cart fs-6"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="earning"></div>
+        </div>
+        </div>
+   
+</div>
+@* <a asp-action="add_category" class="btn btn-outline-dark"> Add a Category</a>
 <a asp-action="Show_Categories" class="btn btn-outline-primary">Show Categories</a>
 <a asp-action="Add_Manufacturer" class="btn btn-outline-info">Register New Manufacturer</a>
 <a asp-action="Show_Manufacturers" class="btn btn-outline-secondary">Show Manufacturers</a>
 <a asp-action="Add_Product" class="btn btn-primary">Add New Product</a>
 <a asp-action="Show_Products" class="btn btn-secondary">Show Products</a>
 <a asp-controller="User" asp-action="Logout" class="btn btn-danger">Logout</a>
+ *@

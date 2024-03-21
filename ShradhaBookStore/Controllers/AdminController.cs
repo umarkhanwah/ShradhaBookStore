@@ -22,6 +22,13 @@ namespace ShradhaBookStore.Controllers
                 TempData["Error"] = "Please Login first";
                 return RedirectToAction("Login", "User");
             }
+            ViewData["Products"] = bookStoreContext.Products.Count();
+            ViewData["Quantity"] = bookStoreContext.Products.Sum(x=>x.Quantity);
+            ViewData["Placed"] = bookStoreContext.Orders.Count(x=>x.Status=="Placed");
+            ViewData["Delivered"] = bookStoreContext.Orders.Count(x=>x.Status=="Delivered");
+            ViewData["Cart"] = bookStoreContext.Carts.Count();
+            ViewData["Reviews"] = bookStoreContext.Reviews.Count();
+            ViewData["Users"] = bookStoreContext.Users.Count();
             ViewData["Name"] = HttpContext.Session.GetString("adminsession");
             return View();
         }
@@ -602,6 +609,27 @@ namespace ShradhaBookStore.Controllers
 
 
             return View(allOrders);
+        }
+        public IActionResult Reviews()
+        {
+            if (HttpContext.Session.GetString("adminsession") == null)
+            {
+                TempData["Error"] = "Please Login first";
+                return RedirectToAction("Login", "User");
+            }
+            ViewData["msg"] = TempData["msg"];
+            // Fetch reviews along with associated user and product information
+            var reviewsWithDetails = (from r in bookStoreContext.Reviews
+                                      join u in bookStoreContext.Users on r.UserId equals u.Id
+                                      join p in bookStoreContext.Products on r.ProductId equals p.Id
+                                      select new ReviewViewModel
+                                      {
+                                          Review = r,
+                                          User = u,
+                                          Product = p
+                                      }).ToList();
+
+            return View(reviewsWithDetails);
         }
 
     }
