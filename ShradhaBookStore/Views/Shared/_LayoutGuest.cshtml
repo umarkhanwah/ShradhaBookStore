@@ -224,13 +224,11 @@
                 <div class="col-md-4 pt-5">
                     <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
                     <ul class="list-unstyled text-light footer-link-list">
-                        <li><a class="text-decoration-none" href="#">Luxury</a></li>
-                        <li><a class="text-decoration-none" href="#">Sport Wear</a></li>
-                        <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
-                        <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
-                        <li><a class="text-decoration-none" href="#">Popular Dress</a></li>
-                        <li><a class="text-decoration-none" href="#">Gym Accessories</a></li>
-                        <li><a class="text-decoration-none" href="#">Sport Shoes</a></li>
+                        @foreach(var i in ViewBag.Cats){
+                            
+                        <li><a class="text-decoration-none" asp-action="Category_Products" asp-route-id="@i.Id">@i.Name</a></li>
+                        }
+                     
                     </ul>
                 </div>
 
@@ -282,8 +280,8 @@
                 <div class="row pt-2">
                     <div class="col-12">
                         <p class="text-left text-light">
-                            Copyright &copy; 2021 Company Name
-                            | Designed by <a rel="sponsored" href="https://templatemo.com" target="_blank">TemplateMo</a>
+                            Copyright &copy; 2024 ShradhaBookStore
+                            | Developed by <a rel="sponsored" href="https://umarkhanwah.github.io/MyPortfolio/" target="_blank">Umar Khan</a>
                         </p>
                     </div>
                 </div>

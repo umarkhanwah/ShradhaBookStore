@@ -1,4 +1,5 @@
-﻿@model CategoryProductViewModel
+﻿@model IEnumerable<ShradhaBookStore.Models.Category>
+@* CategoryProductViewModel *@
 @{
     Layout = "_LayoutGuest";
 }
@@ -12,10 +13,10 @@
     </div>
     <div class="row">
         @* Show Parent Category Cards on Home Page *@   
-                @foreach (var cat in Model.Categories)
+                @foreach (var cat in Model)
                 {
                     <div class="col-12 col-md-4 p-5 mt-3">
-                <a asp-action="Sub_Categories" asp-route-id="@cat.Id"><img src="~/images/Products/@cat.Image" class="rounded-circle img-fluid border  w-100 h-50"></a>
+                <a asp-action="Category_Products" asp-route-id="@cat.Id"><img src="~/images/Products/@cat.Image" class="rounded-circle img-fluid border  w-100 h-50"></a>
                         <h5 class="text-center mt-3 mb-3">@cat.Name</h5>
                         <p class="text-center">
                             @cat.Description <br />
@@ -24,7 +25,7 @@
                     </div>
 
                 }
-                @foreach (var products in Model.Products)
+              @*   @foreach (var products in Model.Products)
                 {
                     <div class="col-12 col-md-4 p-5 mt-3">
                         <a asp-action="Product_info" asp-route-id="@products.Id"><img src="~/images/Products/@products.Image" class="rounded-circle img-fluid border w-100 h-50"></a>
@@ -34,7 +35,7 @@
                             <a class="btn btn-success">Go Shop</a>
                         </p>
                     </div>
-                }
+                } *@
 
             </div>
         </div>

@@ -32,15 +32,30 @@ namespace ShradhaBookStore.Controllers
                 ViewData["Image"] = User.Image;
                 ViewData["User_id"] = user_id;
                 ViewBag.orders = bookStoreContext.Orders.Where(x=>x.UserId==user_id).ToList();
-            
+                
             }
             Allproduct alldata = new Allproduct();
+            var productsWithReviews = bookStoreContext.Products
+               .Include(p => p.Reviews) // Include the related reviews
+               .Where(p => p.Status != 1)
+               .Select(p => new
+               {
+                   Product = p,
+                   FirstReviewStars = p.Reviews.OrderBy(r => r.Id).Select(r => (int?)r.Stars).FirstOrDefault(), // Fetch stars from the first review
+                   ReviewCount = p.Reviews.Count() // Count of reviews
+               })
+               .ToList();
+
+
             var categories = bookStoreContext.Categories.Where(x=>x.ParentCategoryId == null).ToList();
             var products = bookStoreContext.Products.ToList();
             var manufacturers = bookStoreContext.Manufacturers.ToList();
             alldata.Products = products;
             alldata.Manufacturers = manufacturers;
             alldata.Categories = categories;
+            alldata.FirstReviewStars = productsWithReviews.ToDictionary(p => p.Product.Id, p => p.FirstReviewStars);
+            alldata.ReviewCounts = productsWithReviews.ToDictionary(p => p.Product.Id, p => p.ReviewCount);
+            ViewBag.Cats = bookStoreContext.Categories.Where(x=>x.ParentCategoryId != null).ToList();
             return View(alldata);
         }
         public IActionResult Faqs()
@@ -59,9 +74,11 @@ namespace ShradhaBookStore.Controllers
 
             }
             var faq = bookStoreContext.Faqs.ToList();
+            ViewBag.Cats = bookStoreContext.Categories.Where(x => x.ParentCategoryId != null).ToList();
             return View(faq);
         }
-        public IActionResult Sub_Categories(int id ,  string heading)
+        //public IActionResult Sub_Categories(int id ,  string heading)
+        public IActionResult Sub_Categories(int id )
         {
 
             ViewData["Name"] = HttpContext.Session.GetString("usersession");
@@ -80,16 +97,17 @@ namespace ShradhaBookStore.Controllers
             var categories = bookStoreContext.Categories.Where(x => x.ParentCategoryId == id).ToList();
             var category = bookStoreContext.Categories.FirstOrDefault(x => x.Id == id);
             //This Method Returns Category And Products Data, If the User Select a category which has sub categories so show its subs, otherwise show its products
-            var viewModel = new CategoryProductViewModel
-            {
+            //var viewModel = new CategoryProductViewModel
+            //{
 
-                Categories = categories,
-                Products = bookStoreContext.Products.Where(x => x.CategoryId == id).ToList()
+            //    Categories = categories,
+            //    Products = bookStoreContext.Products.Where(x => x.CategoryId == id).ToList()
 
-            };
+            //};
 
-            ViewData["Heading"] = categories.Count == 0 ? heading + "/" + category.Name : category.Name ;
-            return View(viewModel);
+            ViewData["Heading"] =  /*categories.Count == 0 ? heading + "/" + category.Name :*/ category.Name ;
+            ViewBag.Cats = bookStoreContext.Categories.Where(x => x.ParentCategoryId != null).ToList();
+            return View(categories);
 
         }
        
@@ -161,6 +179,7 @@ namespace ShradhaBookStore.Controllers
             ViewBag.reviews = reviewsWithUserDetails;
 
 
+            ViewBag.Cats = bookStoreContext.Categories.Where(x => x.ParentCategoryId != null).ToList();
             return View(allproducts);
         }
 
@@ -250,6 +269,7 @@ namespace ShradhaBookStore.Controllers
             cartProducts.Carts = carts;
             cartProducts.Products = products;
             ViewData["msg"] = TempData["msg"];
+            ViewBag.Cats = bookStoreContext.Categories.Where(x => x.ParentCategoryId != null).ToList();
             return View(cartProducts);
         }
 
@@ -358,6 +378,7 @@ namespace ShradhaBookStore.Controllers
                 // We Will Pass only Provided Data Of User Because of Data Security
             };
             ViewData["error"] = TempData["error"];
+            ViewBag.Cats = bookStoreContext.Categories.Where(x => x.ParentCategoryId != null).ToList();
             return View(cartProducts);
         }
         [HttpPost]
@@ -401,6 +422,10 @@ namespace ShradhaBookStore.Controllers
             bookStoreContext.SaveChanges();
             return RedirectToAction("Index");
         }
+
+       
+
+
             public IActionResult Shop()
         {
             Allproduct allproduct = new Allproduct();
@@ -423,16 +448,64 @@ namespace ShradhaBookStore.Controllers
             allproduct.FirstReviewStars = productsWithReviews.ToDictionary(p => p.Product.Id, p => p.FirstReviewStars);
             allproduct.ReviewCounts = productsWithReviews.ToDictionary(p => p.Product.Id, p => p.ReviewCount);
 
+            ViewBag.Cats = bookStoreContext.Categories.Where(x => x.ParentCategoryId != null).ToList();
             return View(allproduct);
 
-            //Allproduct allproduct = new Allproduct();
-            //var products = bookStoreContext.Products.Where(x => x.Status != 1).ToList();
-            //var categories = bookStoreContext.Categories.ToList();
-            //var manufacturers = bookStoreContext.Manufacturers.ToList();
-            //allproduct.Products = products;
-            //allproduct.Categories = categories;
-            //allproduct.Manufacturers = manufacturers;
-            //return View(allproduct);
+        }
+
+        public IActionResult Category_Products(int id)
+        {
+            Allproduct allproduct = new Allproduct();
+
+            var productsWithReviews = bookStoreContext.Products
+                .Include(p => p.Reviews) // Include the related reviews
+                .Where(p => p.Status != 1 && p.CategoryId == id)
+                .Select(p => new
+                {
+                    Product = p,
+                    FirstReviewStars = p.Reviews.OrderBy(r => r.Id).Select(r => (int?)r.Stars).FirstOrDefault(), // Fetch stars from the first review
+                    ReviewCount = p.Reviews.Count() // Count of reviews
+                })
+                .ToList();
+
+            // Map the result to Allproduct model
+            allproduct.Products = productsWithReviews.Select(p => p.Product).ToList();
+            allproduct.Categories = bookStoreContext.Categories.ToList();
+            allproduct.Manufacturers = bookStoreContext.Manufacturers.ToList();
+            allproduct.FirstReviewStars = productsWithReviews.ToDictionary(p => p.Product.Id, p => p.FirstReviewStars);
+            allproduct.ReviewCounts = productsWithReviews.ToDictionary(p => p.Product.Id, p => p.ReviewCount);
+
+            var category = bookStoreContext.Categories.First(x=>x.Id == id); 
+            ViewBag.Parent = category.ParentCategory; ViewBag.Child = category;
+            ViewBag.Cats = bookStoreContext.Categories.Where(x => x.ParentCategoryId != null).ToList();
+            return View("Shop", allproduct);
+
+        }
+        public IActionResult Manu_Products(int id)
+        {
+            Allproduct allproduct = new Allproduct();
+
+            var productsWithReviews = bookStoreContext.Products
+                .Include(p => p.Reviews) // Include the related reviews
+                .Where(p => p.Status != 1 && p.ManufacturerId == id)
+                .Select(p => new
+                {
+                    Product = p,
+                    FirstReviewStars = p.Reviews.OrderBy(r => r.Id).Select(r => (int?)r.Stars).FirstOrDefault(), // Fetch stars from the first review
+                    ReviewCount = p.Reviews.Count() // Count of reviews
+                })
+                .ToList();
+
+            // Map the result to Allproduct model
+            allproduct.Products = productsWithReviews.Select(p => p.Product).ToList();
+            allproduct.Categories = bookStoreContext.Categories.ToList();
+            allproduct.Manufacturers = bookStoreContext.Manufacturers.ToList();
+            allproduct.FirstReviewStars = productsWithReviews.ToDictionary(p => p.Product.Id, p => p.FirstReviewStars);
+            allproduct.ReviewCounts = productsWithReviews.ToDictionary(p => p.Product.Id, p => p.ReviewCount);
+
+            ViewBag.Cats = bookStoreContext.Categories.Where(x => x.ParentCategoryId != null).ToList();
+            return View("Shop", allproduct);
+
         }
         public IActionResult Register()
         {
@@ -503,6 +576,7 @@ namespace ShradhaBookStore.Controllers
             ViewData["Product_Image"] = bookStoreContext.Products.First(x=>x.Id== product_id).Image;
             ViewData["Product_Name"] = bookStoreContext.Products.First(x=>x.Id== product_id).Name;
             ViewData["Product_id"] = product_id;
+            ViewBag.Cats = bookStoreContext.Categories.Where(x => x.ParentCategoryId != null).ToList();
             return View();
         }
         [HttpPost]

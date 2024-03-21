@@ -21,7 +21,7 @@
                         <ul class="collapse show list-unstyled pl-3">
                             @foreach (var subCategory in category.InverseParentCategory)
                             {
-                                <li><a class="text-decoration-none" href="#">@subCategory.Name</a></li>
+                                <li><a class="text-decoration-none" asp-action="Category_Products" asp-route-id="@subCategory.Id">@subCategory.Name</a></li>
                             }
                         </ul>
                     </li>
@@ -34,7 +34,7 @@
                     <ul id="collapseTwo" class="collapse list-unstyled pl-3">
                         @foreach (var Manu in Model.Manufacturers)
                         {
-                            <li><a class="text-decoration-none" href="#">@Manu.Name</a></li>
+                            <li><a class="text-decoration-none" asp-action="Manu_Products" asp-route-id="@Manu.Id">@Manu.Name</a></li>
                         }
                     </ul>
                 </li>
@@ -47,28 +47,34 @@
                 <div class="col-md-6">
                     <ul class="list-inline shop-top-menu pb-3 pt-1">
                         <li class="list-inline-item">
-                            <a class="h3 text-dark text-decoration-none mr-3" href="#">All</a>
+                            @{
+                                var parent = ViewBag.Parent;
+                                var child = ViewBag.Child;
+                                
+                            }
+                            <a class="h3 text-dark text-decoration-none mr-3"asp-action="Shop">All</a>> 
+                            <a class="h3 text-dark text-decoration-none mr-3"asp-action="Sub_Categories" asp-route-id="@parent.Id">@parent.Name</a>> 
+                            <a class="h3 text-dark text-decoration-none mr-3"asp-action="Category_Products" asp-route-id="@child.Id">@child.Name</a>
                         </li>
-                        <li class="list-inline-item">
-                            <a class="h3 text-dark text-decoration-none mr-3" href="#">Men's</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a class="h3 text-dark text-decoration-none" href="#">Women's</a>
-                        </li>
+                  
                     </ul>
                 </div>
                 <div class="col-md-6 pb-4">
                     <div class="d-flex">
-                        <select class="form-control">
-                            <option>Featured</option>
-                            <option>A to Z</option>
-                            <option>Item</option>
+                        <select id="sortingDropdown" class="form-control" onchange="redirectToAction()">
+                            <option value="">Select Sorting Option</option>
+                            <option value="Featured">Featured</option>
+                            <option value="AtoZ">A to Z</option>
+                            <option value="ZtoA">Z to A</option>
                         </select>
+
+
+                  
                     </div>
                 </div>
             </div>
             <div class="row">
-                @foreach (var product in Model.Products)
+                @foreach (var product in Model.Products.OrderBy(p => p.Name))
                 {
                     <div class="col-md-4">
        
@@ -122,7 +128,20 @@
                     </div>
                 }
 
-               @*  @foreach (var item in Model.Products)
+
+                <script>
+                    // Function to handle redirection and save selected option to local storage
+                    function redirectToAction() {
+                        var selectedOption = document.getElementById("sortingDropdown").value;
+                        var currentUrl = window.location.href;
+                        var url = currentUrl.substring(0, currentUrl.indexOf('?') != -1 ? currentUrl.indexOf('?') : currentUrl.length);
+                        window.location.href = url + "?sortOrder=" + selectedOption;
+                    }
+                </script>
+
+
+
+                @*  @foreach (var item in Model.Products)
                 {
 
                     <div class="col-md-4">

@@ -64,8 +64,7 @@
             <div class="col-lg-6 m-auto">
                 <h1 class="h1">Featured Product</h1>
                 <p>
-                    Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                    Excepteur sint occaecat cupidatat non proident.
+                    Unlock excellence with our featured products - where quality meets innovation, and satisfaction knows no bounds.
                 </p>
             </div>
         </div>
@@ -82,20 +81,29 @@
                     </a>
                     <div class="card-body">
                         <ul class="list-unstyled d-flex justify-content-between">
-                            <li>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-muted fa fa-star"></i>
-                                <i class="text-muted fa fa-star"></i>
-                            </li>
+                                    <li>
+                                        @{
+                                            var gold = Model.FirstReviewStars.ContainsKey(products.Id) ? Model.FirstReviewStars[products.Id] : 0;
+                                        }
+                                        @for (int s = 0; s < gold; s++)
+                                        {
+                                            <i class="text-warning fa fa-star"></i>
+                                        }
+                                        @{
+                                            var white = 5 - gold;
+                                        }
+                                        @for (int s = 0; s < white; s++)
+                                        {
+                                            <i class="text-muted fa fa-star"></i>
+                                        }
+                                    </li>
                                     <li class="text-muted text-right">@products.Price</li>
                         </ul>
                                 <a asp-action="Product_info" class="text-decoration-none text-dark" asp-route-id="@products.Id">@products.Name</a>
                         <p class="card-text">
                             @products.Description
                         </p>
-                        <p class="text-muted">Reviews (24)</p>
+                                <p class="text-muted">Reviews (@(Model.ReviewCounts.ContainsKey(products.Id) ? Model.ReviewCounts[products.Id].ToString() : "0"))</p>
                     </div>
                 </div>
             </div>
